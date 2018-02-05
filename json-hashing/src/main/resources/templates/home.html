@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Spring Boot Thymeleaf Hello World Example</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script src="http://code.jquery.com/jquery-3.3.1.min.js"
+	integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+	crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/aes.js"></script>
+	<script th:inline="javascript">var appVersion = [[${appVersion}]]; </script>
+<script>
+			  $(document).ready(function(){
+				  $("#send").click(function(){
+					  var j =JSON.parse($("#json").val())
+					  console.time()
+					   var p =prepareJSONRequest(j);
+					  console.timeEnd()
+				  $.ajax({
+					  headers: {
+					        "se":"first value",
+					    },
+					  type: "POST",
+					  url: '/greeting',
+					  data: JSON.stringify(p),
+					  contentType: 'application/json'
+					});
+				  })
+			  })
+			  </script>
+</head>
+<body>
+	<textarea id="json" idows="" cols="">{"id":1,"content":"asdsad"}</textarea>
+	<button id="send">Send</button>
+</body>
+<script>
+function initJSONParser(e){var t=function(e,t){this.keySize=e/32,this.iterationCount=t};t.prototype.generateKey=function(t,r){return e.PBKDF2(r,e.enc.Hex.parse(t),{keySize:this.keySize,iterations:this.iterationCount})},t.prototype.encrypt=function(t,r,n,i){var o=this.generateKey(t,n);return e.AES.encrypt(i,o,{iv:e.enc.Hex.parse(r)}).ciphertext.toString(e.enc.Base64)},t.prototype.decrypt=function(t,r,n,i){var o=this.generateKey(t,n),a=e.lib.CipherParams.create({ciphertext:e.enc.Base64.parse(i)});return e.AES.decrypt(a,o,{iv:e.enc.Hex.parse(r)}).toString(e.enc.Utf8)};window.prepareJSONRequest=function(r){var n=e.lib.WordArray.random(16).toString(e.enc.Hex),i=e.lib.WordArray.random(16).toString(e.enc.Hex);return{sha:n,jwt:i,kerberos:new t(128,100).encrypt(i,n,appVersion,JSON.stringify(r))}}}
+initJSONParser(CryptoJS)
+</script>
+</html>
