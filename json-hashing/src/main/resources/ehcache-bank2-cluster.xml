@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ehcache xmlns="http://ehcache.org/ehcache" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://ehcache.org/ehcache http://ehcache.org/ehcache.xsd"
+	updateCheck="false" defaultTransactionTimeoutInSeconds="6000"
+	dynamicConfig="false">
+
+
+	<cache name="appContextRegion" eternal="true"
+		maxElementsInMemory="100000" overflowToDisk="false" diskPersistent="false"
+		statistics="true" copyOnRead="true" transactionalMode="off">
+		<searchable values="false" />
+		<cacheEventListenerFactory
+			class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"
+			properties="replicateAsynchronously=true, replicatePuts=true,
+                                replicateUpdates=true, replicateUpdatesViaCopy=true, replicateRemovals=true" />
+		 <bootstrapCacheLoaderFactory properties="bootstrapAsynchronously=false"
+			class="net.sf.ehcache.distribution.RMIBootstrapCacheLoaderFactory" />
+
+	</cache>
+
+
+	<cacheManagerPeerProviderFactory
+		class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
+		properties="hostName=localhost,peerDiscovery=automatic,  multicastGroupAddress=239.255.100.0, multicastGroupPort=4446, timeToLive=1" />
+
+	<cacheManagerPeerListenerFactory
+		class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"
+		properties="hostName=192.168.72.17, port=30000,
+                                socketTimeoutMillis=10000" />
+
+
+</ehcache>
