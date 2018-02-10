@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.Ordered;
@@ -21,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class HttpJSONDecodingFilter extends OncePerRequestFilter implements Ordered {
 
+	Logger logger = Logger.getLogger(HttpJSONDecodingFilter.class);
 	private static final String SE_HEADER = "se";
 
 	public static boolean ENABLED = true;
@@ -34,6 +36,7 @@ public class HttpJSONDecodingFilter extends OncePerRequestFilter implements Orde
 	@Override
 	protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain filterChain)
 			throws ServletException, IOException {
+		logger.error("siema");
 		String header = request.getHeader(HttpHeaders.CONTENT_TYPE);
 		boolean isJsonType = header != null && request.getHeader(HttpHeaders.CONTENT_TYPE).contains(MediaType.APPLICATION_JSON_VALUE);
 
