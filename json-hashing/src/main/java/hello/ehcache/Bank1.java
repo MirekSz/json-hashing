@@ -25,19 +25,19 @@ public class Bank1 {
 			Thread.sleep(40);
 			int acc1 = random(0);
 			int acc2 = random(acc1);
-			// lock(acc1, acc2, cache);
+			lock(acc1, acc2, cache);
 			Element element1 = cache.get(Long.valueOf(acc1));
 			Element element2 = cache.get(Long.valueOf(acc2));
 
 			Account account1 = (Account) element1.getObjectValue();
-			account1.balance = account1.balance - 3L;
 			Account account2 = (Account) element2.getObjectValue();
+			account1.balance = account1.balance - 3L;
 			account2.balance = account2.balance + 3L;
 
 			cache.put(new Element(account1.id, account1));
 			cache.put(new Element(account2.id, account2));
 
-			// unloack(acc1, acc2, cache);
+			unloack(acc1, acc2, cache);
 			System.out.println("FROM " + account1.id + " TO " + account2.id);
 		}
 		long sum = 0;
