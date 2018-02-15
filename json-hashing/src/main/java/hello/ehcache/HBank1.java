@@ -7,43 +7,91 @@ import java.util.concurrent.TimeUnit;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
+import com.hazelcast.core.MemberAttributeEvent;
+import com.hazelcast.core.MembershipEvent;
+import com.hazelcast.core.MembershipListener;
+import com.hazelcast.core.TransactionalMap;
+import com.hazelcast.scheduledexecutor.IScheduledExecutorService;
+import com.hazelcast.scheduledexecutor.IScheduledFuture;
+import com.hazelcast.scheduledexecutor.ScheduledTaskStatistics;
+import com.hazelcast.transaction.TransactionContext;
+import com.hazelcast.transaction.TransactionOptions;
 
 public class HBank1 {
 
-	public static final int ACCOUNTS = 1000;
-	public static final int ITERATIONS = 10000;
+	public static final int ACCOUNTS = 10;
+	public static final int ITERATIONS = 1000;
 	public static Random random = new Random();
 
 	public static void main(final String[] args) throws Exception {
 		HazelcastInstance h1 = Hazelcast.newHazelcastInstance();
-		IMap<Object, Object> map = h1.getMap("appContextRegion");
-		System.out.println("AKTUALNY ROZMIAR " + map.size());
+		IScheduledExecutorService executorService = h1.getScheduledExecutorService("zadania");
+		IScheduledFuture<?> scheduleAtFixedRate = executorService.scheduleAtFixedRate(new Task(), 5, 2, TimeUnit.SECONDS);
+
+		h1.getCluster().addMembershipListener(new MembershipListener() {
+
+			@Override
+			public void memberAdded(final MembershipEvent membershipEvent) {
+				System.out.println("Witaj " + membershipEvent.getMember().getUuid());
+
+			}
+
+			@Override
+			public void memberRemoved(final MembershipEvent membershipEvent) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void memberAttributeChanged(final MemberAttributeEvent memberAttributeEvent) {
+				// TODO Auto-generated method stub
+
+			}
+
+		});
+
+		TransactionOptions options = new TransactionOptions().setTransactionType(TransactionOptions.TransactionType.ONE_PHASE);
+
+		IMap<Object, Object> cache = h1.getMap("appContextRegion");
+		System.out.println("AKTUALNY ROZMIAR " + cache.size());
 		for (Long i = 1L; i <= ACCOUNTS; i++) {
 			Account account = new Account(i);
-			map.put(account.id, account);
+			cache.put(account.id, account);
 		}
 		System.out.println("START");
 		Thread.sleep(10000);
+		ScheduledTaskStatistics stats = scheduleAtFixedRate.getStats();
+		System.out.println(stats);
 		for (Long i = 1L; i <= ITERATIONS; i++) {
-			Thread.sleep(40);
-			int acc1 = random(0);
-			int acc2 = random(acc1);
-			// lock(acc1, acc2, map);
-			Account account1 = (Account) map.get(Long.valueOf(acc1));
-			Account account2 = (Account) map.get(Long.valueOf(acc2));
+			TransactionContext context = h1.newTransactionContext(options);
+			try {
+				context.beginTransaction();
+				TransactionalMap<Object, Object> map = context.getMap("appContextRegion");
+				Thread.sleep(40);
+				int acc1 = random(0);
+				int acc2 = random(acc1);
+				// lock(acc1, acc2, map);
+				Account account1 = (Account) map.getForUpdate(Long.valueOf(acc1));
+				Thread.sleep(20);
+				Account account2 = (Account) map.getForUpdate(Long.valueOf(acc2));
 
-			account1.balance = account1.balance - 3L;
-			account2.balance = account2.balance + 3L;
+				account1.balance = account1.balance - 3L;
+				account2.balance = account2.balance + 3L;
 
-			map.put(account1.id, account1);
-			map.put(account2.id, account2);
+				map.put(account1.id, account1);
+				map.put(account2.id, account2);
 
-			// unloack(acc1, acc2, map);
-			System.out.println("FROM " + account1.id + " TO " + account2.id);
+				// unloack(acc1, acc2, map);
+				System.out.println("FROM " + account1.id + " TO " + account2.id);
+				context.commitTransaction();
+			} catch (Exception e) {
+				context.rollbackTransaction();
+				e.printStackTrace();
+			}
 		}
 		long sum = 0;
 		for (Long i = 1L; i <= ACCOUNTS; i++) {
-			Account account1 = (Account) map.get(i);
+			Account account1 = (Account) cache.get(i);
 
 			sum += account1.balance;
 			System.out.println(account1.id + " " + account1.balance);
@@ -52,23 +100,15 @@ public class HBank1 {
 	}
 
 	private static void lock(final long a1, final long a2, final IMap<Object, Object> cache) throws Exception {
-		if (a1 <= a2) {
-			cache.tryLock(a1, 2000, TimeUnit.MILLISECONDS);
-			cache.tryLock(a2, 2000, TimeUnit.MILLISECONDS);
-		} else {
-			cache.tryLock(a2, 2000, TimeUnit.MILLISECONDS);
-			cache.tryLock(a1, 2000, TimeUnit.MILLISECONDS);
-		}
+		System.out.println("LOCKING " + a1 + " " + a2);
+		cache.lock(a1);
+		Thread.sleep(20);
+		cache.lock(a2);
 	}
 
 	private static void unloack(final long a1, final long a2, final IMap<Object, Object> cache) throws Exception {
-		if (a1 <= a2) {
-			cache.unlock(a1);
-			cache.unlock(a2);
-		} else {
-			cache.unlock(a2);
-			cache.unlock(a1);
-		}
+		cache.unlock(a1);
+		cache.unlock(a2);
 	}
 
 	public static int random(final int acc1) {

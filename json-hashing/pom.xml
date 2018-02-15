@@ -61,6 +61,11 @@
         	<artifactId>ehcache-core</artifactId>
         	<version>2.6.11</version>
         </dependency>
+        <dependency>
+        	<groupId>javax.cache</groupId>
+        	<artifactId>cache-api</artifactId>
+        	<version>1.1.0</version>
+        </dependency>
     </dependencies>
 
     <properties>
