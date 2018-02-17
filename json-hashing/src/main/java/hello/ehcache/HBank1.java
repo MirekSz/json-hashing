@@ -19,14 +19,15 @@ import com.hazelcast.transaction.TransactionOptions;
 
 public class HBank1 {
 
-	public static final int ACCOUNTS = 10;
+	public static final int ACCOUNTS = 1000;
 	public static final int ITERATIONS = 1000;
 	public static Random random = new Random();
 
 	public static void main(final String[] args) throws Exception {
 		HazelcastInstance h1 = Hazelcast.newHazelcastInstance();
 		IScheduledExecutorService executorService = h1.getScheduledExecutorService("zadania");
-		IScheduledFuture<?> scheduleAtFixedRate = executorService.scheduleAtFixedRate(new Task(), 5, 2, TimeUnit.SECONDS);
+		IScheduledFuture<?> scheduleAtFixedRate = executorService.scheduleAtFixedRate(new Task(), 5, 2,
+				TimeUnit.SECONDS);
 
 		h1.getCluster().addMembershipListener(new MembershipListener() {
 
@@ -49,10 +50,11 @@ public class HBank1 {
 			}
 
 		});
-
-		TransactionOptions options = new TransactionOptions().setTransactionType(TransactionOptions.TransactionType.ONE_PHASE);
+		TransactionOptions options = new TransactionOptions()
+				.setTransactionType(TransactionOptions.TransactionType.ONE_PHASE);
 
 		IMap<Object, Object> cache = h1.getMap("appContextRegion");
+		cache.clear();
 		System.out.println("AKTUALNY ROZMIAR " + cache.size());
 		for (Long i = 1L; i <= ACCOUNTS; i++) {
 			Account account = new Account(i);
