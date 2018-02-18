@@ -25,15 +25,16 @@ public class GreetingController {
 
 	private SseEmitter ssEmitter;
 
-	@Scheduled(fixedDelay = 1000)
+	@Scheduled(fixedDelay = 10000)
 	private void getStats() throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		map.put("members", Application.h1.getCluster().getMembers().size());
 		map.put("membersView", Application.h1.getCluster().getMembers().stream()
-				.map(i -> i.getAddress().getHost() + " " + i.getAddress().getPort()).collect(Collectors.toList()));
+				.map(i -> i.getAddress().getHost() + ":" + i.getAddress().getPort()).collect(Collectors.toList()));
 		map.put("backups", Application.cache.getLocalMapStats().getBackupEntryCount());
 		map.put("local", Application.cache.getLocalMapStats().getOwnedEntryCount());
 		map.put("size", Application.cache.size());
+		map.put("killers", Application.cache.entrySet().stream().map(i -> i.getValue()).collect(Collectors.toList()));
 		ssEmitter.send(map);
 
 	}

@@ -11,11 +11,13 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <link th:href="@{/narrow-jumbotron.css}" rel="stylesheet" />
+<link th:href="@{/animate.css}" rel="stylesheet" />
 <script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular-animate.js"></script>
 <script type="text/javascript" th:src="@{/statsApp.js}" />
 
 </head>
@@ -35,38 +37,16 @@
 			<h3 class="text-muted">Verto Killers</h3>
 		</div>
 		
-		
-		
-		
 		<div class="row ">
 			<metric icon="'fas fa-sitemap'" title="'Members'" data="state.members" class="col-sm-3 text-center "/>
 			<metric icon="'fas fa-plane'" title="'Backup'" data="state.backups" class="col-sm-3 text-center "/>
 			<metric icon="'fas fa-archive'" title="'Local'" data="state.local" class="col-sm-3 text-center "/>
 			<metric icon="'fas fa-database'" title="'Size'" data="state.size" class="col-sm-3 text-center "/>
 		</div>
-
-		<div class="card ">
-			<div class="card-header">Unfinished</div>
-			<div class="card-body text-danger">
-				<ul class="list-group list-group-flush">
-					<li class="list-group-item">Script_service from 2017-06-01
-						14:34</li>
-					<li class="list-group-item">Script_service from 2017-06-01
-						14:34</li>
-				</ul>
-			</div>
-		</div>
 		<br></br>
-		<div class="card">
-			<div class="card-header">Members</div>
-			<div class="card-body">
-				<ul class="list-group list-group-flush">
-					<li class="list-group-item">192.168.72.123</li>
-					<li class="list-group-item">192.168.72.125</li>
-					<li class="list-group-item">192.168.72.193</li>
-				</ul>
-			</div>
-		</div>
+		<killers data="state.killers" title="'Killers'" />
+		<br></br>
+		<list data="state.membersView" title="'Members'" />
 
 		<footer class="footer">
 			<p>&copy; Company 2017</p>
