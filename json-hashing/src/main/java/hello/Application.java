@@ -26,7 +26,7 @@ public class Application {
 	public static HazelcastInstance HAZELCAST_INSTANCE;
 	public static IMap<Object, Object> CURRENT_OPERATIONS_REGION;
 
-	public static void main(final String[] args) {
+	public static void main(final String[] args) throws Exception {
 		SpringApplication.run(Application.class, args);
 
 		Config config = new Config();
@@ -38,13 +38,17 @@ public class Application {
 		CURRENT_OPERATIONS_REGION = HAZELCAST_INSTANCE.getMap("current-operations-region");
 		CURRENT_OPERATIONS_REGION.clear();
 
+		Thread.sleep(10000);
 		CURRENT_OPERATIONS_REGION.put("1", prepareParams());
 		Map<String, String> prepareParams = prepareParams();
 		prepareParams.put("type", "t");
+		Thread.sleep(10000);
+		prepareParams.put(START_DATE_PARAM, "2018-12-03 15:13");
 		CURRENT_OPERATIONS_REGION.put("2", prepareParams);
 		Map<String, String> prepareParams2 = prepareParams();
 		prepareParams2.put("type", "a");
-		prepareParams2.put(START_DATE_PARAM, "2018-12-03 14:16");
+		prepareParams2.put(START_DATE_PARAM, "2018-12-03 15:16");
+		Thread.sleep(10000);
 		CURRENT_OPERATIONS_REGION.put("3", prepareParams2);
 	}
 

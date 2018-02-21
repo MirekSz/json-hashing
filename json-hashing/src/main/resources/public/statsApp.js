@@ -78,7 +78,7 @@ phonecatApp.component('killers', {
 	},
 	template: `
 	<ul class="timeline">
-	<li class="timeline-inverted" ng-repeat="item in $ctrl.data|orderBy:sortByDate track by item.id ">
+	<li class="timeline-inverted repeat-item" ng-repeat="item in $ctrl.data|orderBy:sortByDate:true track by item.id ">
 		<div class="timeline-badge success" ng-if="item.type=='f'">
 			F
 		</div>
