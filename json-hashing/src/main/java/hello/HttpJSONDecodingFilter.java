@@ -36,7 +36,6 @@ public class HttpJSONDecodingFilter extends OncePerRequestFilter implements Orde
 	@Override
 	protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain filterChain)
 			throws ServletException, IOException {
-		logger.error("siema");
 		String header = request.getHeader(HttpHeaders.CONTENT_TYPE);
 		boolean isJsonType = header != null && request.getHeader(HttpHeaders.CONTENT_TYPE).contains(MediaType.APPLICATION_JSON_VALUE);
 

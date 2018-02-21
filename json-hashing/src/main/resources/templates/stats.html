@@ -9,15 +9,19 @@
 	integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 	crossorigin="anonymous"></script>
 <script
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+<script
 	src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <link th:href="@{/narrow-jumbotron.css}" rel="stylesheet" />
 <link th:href="@{/animate.css}" rel="stylesheet" />
+<link th:href="@{/timeline.css}" rel="stylesheet" />
 <script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular-animate.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular-animate.js"></script>
 <script type="text/javascript" th:src="@{/statsApp.js}" />
 
 </head>
@@ -36,18 +40,172 @@
 			</nav>
 			<h3 class="text-muted">Verto Killers</h3>
 		</div>
-		
+
 		<div class="row ">
-			<metric icon="'fas fa-sitemap'" title="'Members'" data="state.members" class="col-sm-3 text-center "/>
-			<metric icon="'fas fa-plane'" title="'Backup'" data="state.backups" class="col-sm-3 text-center "/>
-			<metric icon="'fas fa-archive'" title="'Local'" data="state.local" class="col-sm-3 text-center "/>
-			<metric icon="'fas fa-database'" title="'Size'" data="state.size" class="col-sm-3 text-center "/>
+			<metric icon="'fas fa-sitemap'" title="'Members'"
+				data="state.members" class="col-sm-3 text-center " />
+			<metric icon="'fas fa-plane'" title="'Backup'" data="state.backups"
+				class="col-sm-3 text-center " />
+			<metric icon="'fas fa-archive'" title="'Local'" data="state.local"
+				class="col-sm-3 text-center " />
+			<metric icon="'fas fa-database'" title="'Size'" data="state.size"
+				class="col-sm-3 text-center " />
 		</div>
 		<br></br>
 		<killers data="state.killers" title="'Killers'" />
 		<br></br>
 		<list data="state.membersView" title="'Members'" />
+		<br/>
+		<ul class="timeline">
+			<li class="timeline-inverted">
+				<div class="timeline-badge success">
+					<i class="glyphicon glyphicon-check"></i>
+				</div>
+				<div class="timeline-panel">
+					<div class="timeline-heading">
 
+						<h4 class="timeline-title">Mussum ipsum cacilds</h4>
+
+						<p>
+							<small class="text-muted"><i
+								class="glyphicon glyphicon-time"></i> 11 hours ago via Twitter</small>
+						</p>
+					</div>
+					<div class="timeline-body">
+						<div class="d-flex w-100 justify-content-between">
+							<h6 class="text-info ng-binding">ScriptService_execute</h6>
+							<div>
+								<small ng-class="item.stopDate?'text-success':'text-danger'"
+									class="ng-binding text-success" style="">2018-02-21
+									14:40:22(a few seconds)</small>
+							</div>
+						</div>
+						<textarea readonly=""
+							class="float-left form-control col-7 ng-binding"></textarea>
+						<p class="mb-1"></p>
+						<div class="float-right ">
+							<svg class="svg-inline--fa fa-user fa-w-16" aria-hidden="true"
+								data-prefix="fas" data-icon="user" role="img"
+								xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+								data-fa-i2svg="">
+								<path fill="currentColor"
+									d="M256 0c88.366 0 160 71.634 160 160s-71.634 160-160 160S96 248.366 96 160 167.634 0 256 0zm183.283 333.821l-71.313-17.828c-74.923 53.89-165.738 41.864-223.94 0l-71.313 17.828C29.981 344.505 0 382.903 0 426.955V464c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48v-37.045c0-44.052-29.981-82.45-72.717-93.134z"></path></svg>
+							<!-- <i class="fas fa-user"></i> -->
+							Mirosław Szajowski
+						</div>
+					</div>
+				</div>
+			</li>
+			<li class="timeline-inverted">
+				<div class="timeline-badge warning">
+					<i class="glyphicon glyphicon-credit-card"></i>
+				</div>
+				<div class="timeline-panel">
+					<div class="timeline-heading">
+
+						<h4 class="timeline-title">Mussum ipsum cacilds</h4>
+
+					</div>
+					<div class="timeline-body">
+						<div class="d-flex w-100 justify-content-between">
+							<h6 class="text-info ng-binding">ScriptService_execute</h6>
+							<div>
+								<small ng-class="item.stopDate?'text-success':'text-danger'"
+									class="ng-binding text-success" style="">2018-02-21
+									14:40:22(a few seconds)</small>
+							</div>
+						</div>
+						<textarea readonly=""
+							class="float-left form-control col-7 ng-binding"></textarea>
+						<p class="mb-1"></p>
+						<div class="float-right ">
+							<svg class="svg-inline--fa fa-user fa-w-16" aria-hidden="true"
+								data-prefix="fas" data-icon="user" role="img"
+								xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+								data-fa-i2svg="">
+								<path fill="currentColor"
+									d="M256 0c88.366 0 160 71.634 160 160s-71.634 160-160 160S96 248.366 96 160 167.634 0 256 0zm183.283 333.821l-71.313-17.828c-74.923 53.89-165.738 41.864-223.94 0l-71.313 17.828C29.981 344.505 0 382.903 0 426.955V464c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48v-37.045c0-44.052-29.981-82.45-72.717-93.134z"></path></svg>
+							<!-- <i class="fas fa-user"></i> -->
+							Mirosław Szajowski
+						</div>
+					</div>
+				</div>
+			</li>
+			<li class="timeline-inverted">
+				<div class="timeline-badge success">
+					<i class="glyphicon glyphicon-check"></i>
+				</div>
+				<div class="timeline-panel">
+					<div class="timeline-heading">
+
+						<h4 class="timeline-title">Mussum ipsum cacilds</h4>
+
+						<p>
+							<small class="text-muted"><i
+								class="glyphicon glyphicon-time"></i> 11 hours ago via Twitter</small>
+						</p>
+					</div>
+					<div class="timeline-body">
+						<div class="d-flex w-100 justify-content-between">
+							<h6 class="text-info ng-binding">ScriptService_execute</h6>
+							<div>
+								<small ng-class="item.stopDate?'text-success':'text-danger'"
+									class="ng-binding text-success" style="">2018-02-21
+									14:40:22(a few seconds)</small>
+							</div>
+						</div>
+						<textarea readonly=""
+							class="float-left form-control col-7 ng-binding"></textarea>
+						<p class="mb-1"></p>
+						<div class="float-right ">
+							<svg class="svg-inline--fa fa-user fa-w-16" aria-hidden="true"
+								data-prefix="fas" data-icon="user" role="img"
+								xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+								data-fa-i2svg="">
+								<path fill="currentColor"
+									d="M256 0c88.366 0 160 71.634 160 160s-71.634 160-160 160S96 248.366 96 160 167.634 0 256 0zm183.283 333.821l-71.313-17.828c-74.923 53.89-165.738 41.864-223.94 0l-71.313 17.828C29.981 344.505 0 382.903 0 426.955V464c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48v-37.045c0-44.052-29.981-82.45-72.717-93.134z"></path></svg>
+							<!-- <i class="fas fa-user"></i> -->
+							Mirosław Szajowski
+						</div>
+					</div>
+				</div>
+			</li>
+			<li class="timeline-inverted">
+				<div class="timeline-badge warning">
+					<i class="glyphicon glyphicon-credit-card"></i>
+				</div>
+				<div class="timeline-panel">
+					<div class="timeline-heading">
+
+						<h4 class="timeline-title">Mussum ipsum cacilds</h4>
+
+					</div>
+					<div class="timeline-body">
+						<div class="d-flex w-100 justify-content-between">
+							<h6 class="text-info ng-binding">ScriptService_execute</h6>
+							<div>
+								<small ng-class="item.stopDate?'text-success':'text-danger'"
+									class="ng-binding text-success" style="">2018-02-21
+									14:40:22(a few seconds)</small>
+							</div>
+						</div>
+						<textarea readonly=""
+							class="float-left form-control col-7 ng-binding"></textarea>
+						<p class="mb-1"></p>
+						<div class="float-right ">
+							<svg class="svg-inline--fa fa-user fa-w-16" aria-hidden="true"
+								data-prefix="fas" data-icon="user" role="img"
+								xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+								data-fa-i2svg="">
+								<path fill="currentColor"
+									d="M256 0c88.366 0 160 71.634 160 160s-71.634 160-160 160S96 248.366 96 160 167.634 0 256 0zm183.283 333.821l-71.313-17.828c-74.923 53.89-165.738 41.864-223.94 0l-71.313 17.828C29.981 344.505 0 382.903 0 426.955V464c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48v-37.045c0-44.052-29.981-82.45-72.717-93.134z"></path></svg>
+							<!-- <i class="fas fa-user"></i> -->
+							Mirosław Szajowski
+						</div>
+					</div>
+				</div>
+			</li>
+		</ul>
 		<footer class="footer">
 			<p>&copy; Company 2017</p>
 		</footer>

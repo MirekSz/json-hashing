@@ -17,6 +17,7 @@
 	xmlns="http://www.hazelcast.com/schema/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<properties>
 		 <property name="hazelcast.max.operation.timeout">30</property>
+		 <property name="hazelcast.logging.type">log4j</property>
 	</properties>
 	<group>
 		<name>admin</name>

@@ -6,7 +6,7 @@
 //			console.log(json.puts)
 //			console.log(json.members)
 //			console.log(json.back)
-//			
+//
 //			if(json.size!=last){
 //				last=json.size;
 //			  chart.data.labels.push(new Date().toISOString().slice(0, 16));
@@ -22,9 +22,9 @@
 //			    chart.data.datasets.forEach((dataset) => {
 //			        dataset.data.push(o++);
 //			    });
-//			    chart.update();	
+//			    chart.update();
 //		},10000)
-//		
+//
 //
 //
 //})
@@ -44,7 +44,14 @@ phonecatApp.controller('KillersController', function CartController($scope, $int
 	$scope.state = { members: 0, backups: 0, local: 0, size: 0,membersView:[] };
 
 });
-
+phonecatApp.filter('diff', function() {
+	  return function(item) {
+		  if(item.stopDate){
+			  return moment.duration(moment(item.stopDate).diff(moment(item.startDate))).humanize()
+		  }
+		 return moment.duration(moment().diff(moment(item.startDate))).humanize()
+	  }
+});
 phonecatApp.component('metric', {
 	bindings: {
 		icon: '=',
@@ -95,7 +102,6 @@ phonecatApp.component('killers', {
 	},
 	controller:function($scope){
 		$scope.sortByDate = function(item) {
-			debugger
 		    var date = Date.parse(item.date);
 		    return date;
 		};
@@ -107,12 +113,12 @@ phonecatApp.component('killers', {
 		<ul class="list-group list-group-flush">
 		<li   ng-repeat="item in $ctrl.data|orderBy:sortByDate track by item.id "  class="list-group-item list-group-item-action flex-column align-items-start repeat-item">
     <div class="d-flex w-100 justify-content-between">
-      <h6 class="text-info">{{item.method}}</h6>
+      <h6 class="text-info">{{item.service}}_{{item.methodName}}</h6>
       <div>
-      <small class="text-danger">{{item.date}} </small>
+      <small ng-class="item.stopDate?'text-success':'text-danger'">{{item.startDate}}({{item | diff}})</small>
       </div>
     </div>
-    <textarea readonly class="float-left form-control col-7">{{item.params}}</textarea>
+    <textarea readonly class="float-left form-control col-7">{{item.arguments}}</textarea>
     <p class="mb-1"></small>
 		<div class="float-right "><i class="fas fa-user"></i> Mirosław Szajowski</div>
   </li>

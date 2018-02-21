@@ -2,7 +2,6 @@
 package hello.ehcache;
 
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
@@ -12,8 +11,6 @@ import com.hazelcast.core.MembershipEvent;
 import com.hazelcast.core.MembershipListener;
 import com.hazelcast.core.TransactionalMap;
 import com.hazelcast.scheduledexecutor.IScheduledExecutorService;
-import com.hazelcast.scheduledexecutor.IScheduledFuture;
-import com.hazelcast.scheduledexecutor.ScheduledTaskStatistics;
 import com.hazelcast.transaction.TransactionContext;
 import com.hazelcast.transaction.TransactionOptions;
 
@@ -26,8 +23,6 @@ public class HBank1 {
 	public static void main(final String[] args) throws Exception {
 		HazelcastInstance h1 = Hazelcast.newHazelcastInstance();
 		IScheduledExecutorService executorService = h1.getScheduledExecutorService("zadania");
-		IScheduledFuture<?> scheduleAtFixedRate = executorService.scheduleAtFixedRate(new Task(), 5, 2,
-				TimeUnit.SECONDS);
 
 		h1.getCluster().addMembershipListener(new MembershipListener() {
 
@@ -50,8 +45,7 @@ public class HBank1 {
 			}
 
 		});
-		TransactionOptions options = new TransactionOptions()
-				.setTransactionType(TransactionOptions.TransactionType.ONE_PHASE);
+		TransactionOptions options = new TransactionOptions().setTransactionType(TransactionOptions.TransactionType.ONE_PHASE);
 
 		IMap<Object, Object> cache = h1.getMap("appContextRegion");
 		cache.clear();
@@ -62,8 +56,6 @@ public class HBank1 {
 		}
 		System.out.println("START");
 		Thread.sleep(10000);
-		ScheduledTaskStatistics stats = scheduleAtFixedRate.getStats();
-		System.out.println(stats);
 		for (Long i = 1L; i <= ITERATIONS; i++) {
 			TransactionContext context = h1.newTransactionContext(options);
 			try {
