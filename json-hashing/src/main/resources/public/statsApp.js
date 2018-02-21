@@ -1,56 +1,24 @@
-//$(document).ready(function(){
-//	var source = new EventSource('/stream');
-//	var last=0;
-//		source.onmessage = function(event) {
-//			var json = JSON.parse(event.data)
-//			console.log(json.puts)
-//			console.log(json.members)
-//			console.log(json.back)
-//
-//			if(json.size!=last){
-//				last=json.size;
-//			  chart.data.labels.push(new Date().toISOString().slice(0, 16));
-//		    chart.data.datasets.forEach((dataset) => {
-//		        dataset.data.push(json.size);
-//		    });
-//			}
-//		    chart.update();
-//		}
-//		var o=0;
-//		setInterval(function(){
-//			  chart.data.labels.push(new Date().toISOString().slice(0, 16));
-//			    chart.data.datasets.forEach((dataset) => {
-//			        dataset.data.push(o++);
-//			    });
-//			    chart.update();
-//		},10000)
-//
-//
-//
-//})
-
 var phonecatApp = angular.module('killers', ['ngAnimate']);
-
 
 phonecatApp.controller('KillersController', function CartController($scope, $interval, $timeout) {
 	var source = new EventSource('/stream');
 	source.onmessage = function (event) {
 		var json = JSON.parse(event.data)
 		$timeout(function () {
-			$scope.state= json;
+			$scope.state = json;
 		}, 1);
 	}
 
-	$scope.state = { members: 0, backups: 0, local: 0, size: 0,membersView:[] };
+	$scope.state = { members: 0, backups: 0, local: 0, size: 0, membersView: [] };
 
 });
-phonecatApp.filter('diff', function() {
-	  return function(item) {
-		  if(item.stopDate){
-			  return moment.duration(moment(item.stopDate).diff(moment(item.startDate))).humanize()
-		  }
-		 return moment.duration(moment().diff(moment(item.startDate))).humanize()
-	  }
+phonecatApp.filter('diff', function () {
+	return function (item) {
+		if (item.stopDate) {
+			return moment.duration(moment(item.stopDate).diff(moment(item.startDate))).humanize()
+		}
+		return moment.duration(moment().diff(moment(item.startDate))).humanize()
+	}
 });
 phonecatApp.component('metric', {
 	bindings: {
@@ -60,7 +28,6 @@ phonecatApp.component('metric', {
 	},
 	controller: function ($scope, $element) {
 		this.$onInit = function () {
-			console.log($($($element).find("canvas")[0]))
 			setTimeout(function () {
 				$scope.$ctrl.chart = createChart($($($element).find("canvas")[0]));
 			}, 0);
@@ -100,31 +67,47 @@ phonecatApp.component('killers', {
 		data: '=',
 		title: '=',
 	},
-	controller:function($scope){
-		$scope.sortByDate = function(item) {
-		    var date = Date.parse(item.date);
-		    return date;
+	controller: function ($scope) {
+		$scope.sortByDate = function (item) {
+			var date = Date.parse(item.startDate);
+			return date;
 		};
+		this.showParams = function (item) {
+			item.showParams = !item.showParams;
+		}
 	},
 	template: `
-		<div class="card">
-		<div class="card-header">{{$ctrl.title}}</div>
-		<div class="card-body">
-		<ul class="list-group list-group-flush">
-		<li   ng-repeat="item in $ctrl.data|orderBy:sortByDate track by item.id "  class="list-group-item list-group-item-action flex-column align-items-start repeat-item">
-    <div class="d-flex w-100 justify-content-between">
-      <h6 class="text-info">{{item.service}}_{{item.methodName}}</h6>
-      <div>
-      <small ng-class="item.stopDate?'text-success':'text-danger'">{{item.startDate}}({{item | diff}})</small>
-      </div>
-    </div>
-    <textarea readonly class="float-left form-control col-7">{{item.arguments}}</textarea>
-    <p class="mb-1"></small>
-		<div class="float-right "><i class="fas fa-user"></i> Mirosław Szajowski</div>
-  </li>
-		</ul>
+	<ul class="timeline">
+	<li class="timeline-inverted" ng-repeat="item in $ctrl.data|orderBy:sortByDate track by item.id ">
+		<div class="timeline-badge success" ng-if="item.type=='f'">
+			F
 		</div>
+		<div class="timeline-badge info" ng-if="item.type=='a'">
+			A
 		</div>
+		<div class="timeline-badge warning" ng-if="item.type=='t'">
+			T
+		</div>
+		<div class="timeline-panel">
+			<div class="timeline-heading">
+				<div class="float-right ">
+					<i class="fas fa-user"></i> {{item.operator}}
+					<span ng-if="item.startDate">
+						<br/>
+						<i class="fab fa-font-awesome-flag"></i> {{item.stopDate}}</span>
+				</div>
+				<h4 class="timeline-title">{{item.startDate}} ({{item | diff}})</h4>
+				<small class="text-muted">
+					<a ng-click="$ctrl.showParams(item)" href="">
+						<i class="glyphicon glyphicon-time"></i>{{item.service}}_{{item.methodName}}</a>
+				</small>
+			</div>
+			<div class="timeline-body">
+				<textarea ng-if="item.showParams" rows="2" readonly class="form-control col-8">{{item.arguments}}</textarea>
+			</div>
+		</div>
+	</li>
+</ul>
 		`
 });
 
