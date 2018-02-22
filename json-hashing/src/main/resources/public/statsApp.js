@@ -15,6 +15,7 @@ phonecatApp.controller('KillersController', function CartController($scope, $int
 phonecatApp.filter('diff', function () {
 	return function (item) {
 		if (item.stopDate) {
+			var a=moment(item.stopDate).diff(moment(item.startDate),'minutes');
 			return moment.duration(moment(item.stopDate).diff(moment(item.startDate))).humanize()
 		}
 		return moment.duration(moment().diff(moment(item.startDate))).humanize()
@@ -75,18 +76,23 @@ phonecatApp.component('killers', {
 		this.showParams = function (item) {
 			item.showParams = !item.showParams;
 		}
+		this.calculateClassFromdiffMinutes = function(item) {
+			var minutes=0;
+				if (item.stopDate) {
+					minutes= moment(item.stopDate).diff(moment(item.startDate),'minutes');
+				}else{
+					minutes= moment().diff(moment(item.startDate),'minutes');
+				}
+			if (minutes > 5) return 'text-warning';
+			if (minutes > 20) return 'text-danger';
+			return '';
+		}
 	},
 	template: `
 	<ul class="timeline">
 	<li class="timeline-inverted repeat-item" ng-repeat="item in $ctrl.data|orderBy:sortByDate:true track by item.id ">
-		<div class="timeline-badge success" ng-if="item.type=='f'">
-			F
-		</div>
-		<div class="timeline-badge info" ng-if="item.type=='a'">
-			A
-		</div>
-		<div class="timeline-badge warning" ng-if="item.type=='t'">
-			T
+		<div class="timeline-badge" ng-class="{ 'success': item.type=='F', 'info': item.type=='A', 'warning': item.type=='T' }">
+			{{item.type}}
 		</div>
 		<div class="timeline-panel">
 			<div class="timeline-heading">
@@ -96,8 +102,8 @@ phonecatApp.component('killers', {
 						<br/>
 						<i class="fab fa-font-awesome-flag"></i> {{item.stopDate}}</span>
 				</div>
-				<h4 class="timeline-title">{{item.startDate}} ({{item | diff}})</h4>
-				<small class="text-muted">
+				<h4 class="timeline-title" ng-class="$ctrl.calculateClassFromdiffMinutes(item)">{{item.startDate}} ({{item | diff}})</h4>
+				<small class="text-muted" >
 					<a ng-click="$ctrl.showParams(item)" href="">
 						<i class="glyphicon glyphicon-time"></i>{{item.service}}_{{item.methodName}}</a>
 				</small>

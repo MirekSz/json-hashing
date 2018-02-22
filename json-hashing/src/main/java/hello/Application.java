@@ -32,24 +32,23 @@ public class Application {
 		Config config = new Config();
 		config.getGroupConfig().setName("admin").setPassword("randomPaSS");
 		config.addMapConfig(new MapConfig("default").setMaxSizeConfig(new MaxSizeConfig(1000, MaxSizePolicy.PER_NODE))
-				.setEvictionPolicy(EvictionPolicy.LRU).setReadBackupData(true).setBackupCount(0)
-				.setAsyncBackupCount(1));
+				.setEvictionPolicy(EvictionPolicy.LRU).setReadBackupData(true).setBackupCount(0).setAsyncBackupCount(1));
 		HAZELCAST_INSTANCE = Hazelcast.newHazelcastInstance(config);
 		CURRENT_OPERATIONS_REGION = HAZELCAST_INSTANCE.getMap("current-operations-region");
-		CURRENT_OPERATIONS_REGION.clear();
+		// CURRENT_OPERATIONS_REGION.clear();
 
-		Thread.sleep(10000);
-		CURRENT_OPERATIONS_REGION.put("1", prepareParams());
-		Map<String, String> prepareParams = prepareParams();
-		prepareParams.put("type", "t");
-		Thread.sleep(10000);
-		prepareParams.put(START_DATE_PARAM, "2018-12-03 15:13");
-		CURRENT_OPERATIONS_REGION.put("2", prepareParams);
-		Map<String, String> prepareParams2 = prepareParams();
-		prepareParams2.put("type", "a");
-		prepareParams2.put(START_DATE_PARAM, "2018-12-03 15:16");
-		Thread.sleep(10000);
-		CURRENT_OPERATIONS_REGION.put("3", prepareParams2);
+		// Thread.sleep(10000);
+		// CURRENT_OPERATIONS_REGION.put("1", prepareParams());
+		// Map<String, String> prepareParams = prepareParams();
+		// prepareParams.put("type", "t");
+		// Thread.sleep(10000);
+		// prepareParams.put(START_DATE_PARAM, "2018-12-03 15:13");
+		// CURRENT_OPERATIONS_REGION.put("2", prepareParams);
+		// Map<String, String> prepareParams2 = prepareParams();
+		// prepareParams2.put("type", "a");
+		// prepareParams2.put(START_DATE_PARAM, "2018-12-03 15:16");
+		// Thread.sleep(10000);
+		// CURRENT_OPERATIONS_REGION.put("3", prepareParams2);
 	}
 
 	protected static final String STOP_DATE_PARAM = "stopDate";

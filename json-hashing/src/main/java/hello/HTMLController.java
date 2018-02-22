@@ -3,7 +3,6 @@ package hello;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -19,9 +18,6 @@ public class HTMLController {
 
 	@Value("${app.version}")
 	String appVersion;
-
-	private static final String template = "Hello, %s!";
-	private final AtomicLong counter = new AtomicLong();
 
 	private SseEmitter ssEmitter;
 
