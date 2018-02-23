@@ -4,17 +4,17 @@ phonecatApp.controller('KillersController', function CartController($scope, $int
 	var source = new EventSource('/stream');
 	source.onmessage = function (event) {
 		var json = JSON.parse(event.data)
+		json.counters = {ok:0,warnings:0,dangers:0}
 		json.killers.forEach(calculateDuration);
-		countCategories(json);
+		countCategories(json.killers, json.counters);
 		$timeout(function () {
-			$scope.state = json;
+			$scope.state=json;
 		}, 1);
 	}
 
-	$scope.state = { members: 0, backups: 0, local: 0, size: 0, membersView: [] };
+	$scope.state = { members: 0, backups: 0, local: 0, size: 0, membersView: []};
 
 });
-
 function calculateDuration(item){
 	var duration=0;
 	if (item.stopDate) {
@@ -24,18 +24,17 @@ function calculateDuration(item){
 	}
 	item.duration=duration;
 }
-function countCategories(state){
-	state.ok=0,state.warnings=0,state.dangers=0;
-	state.killers.forEach(function(item){
+function countCategories(killers, counters){
+	killers.forEach(function(item){
 		if(item.duration>5){
-			state.warnings++;
+			counters.warnings++;
 			return;
 		}
 		if(item.duration>20){
-			state.dangers++;
+			counters.dangers++;
 			return;
 		}
-		state.ok++;
+		counters.ok++;
 	})
 }
 phonecatApp.filter('diff', function () {

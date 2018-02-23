@@ -26,18 +26,18 @@
 			<nav>
 				<ul class="nav nav-pills float-right">
 					<li class="nav-item">
-						<a class="nav-link text-danger h2" href="#"><i class="fas fa-lightbulb"> </i>{{state.dangers}}
+						<a class="nav-link text-danger h2" href="#"><i class="fas fa-lightbulb"> </i>{{state.counters.dangers}}
 						</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link text-warning h2" href="#"><i class="fas fa-lightbulb"></i> {{state.warnings}}</a>
+						<a class="nav-link text-warning h2" href="#"><i class="fas fa-lightbulb"></i> {{state.counters.warnings}}</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link text-muted h2" href="#"><i class="fas fa-lightbulb"></i> {{state.ok}}</a>
+						<a class="nav-link text-muted h2" href="#"><i class="fas fa-lightbulb"></i> {{state.counters.ok}}</a>
 					</li>
 				</ul>
 			</nav>
-			<h3 class="text-muted">Verto Killers</h3>
+			<h3 class="text-muted font-italic">Verto Killers</h3>
 		</div>
 		<div class="row ">
 			<metric icon="'fas fa-sitemap'" title="'Members'" data="state.members" class="col-sm-3 text-center " />
