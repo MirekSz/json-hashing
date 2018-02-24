@@ -4,22 +4,44 @@ phonecatApp.controller('KillersController', function CartController($scope, $int
 	var source = new EventSource('/stream');
 	source.onmessage = function (event) {
 		var json = JSON.parse(event.data)
+		json.allKillers = json.killers;
 		json.counters = { ok: 0, warnings: 0, dangers: 0 }
 		json.killers.forEach(calculateDuration);
 		countCategories(json.killers, json.counters);
+
 		$timeout(function () {
-			$scope.state = json;
+			$scope.state = filterKillers(json, $scope.filterBy);
 		}, 1);
 	}
 
 	$scope.state = { members: 0, backups: 0, local: 0, size: 0, membersView: [] };
-	this.filter = function (type) {
-		if (type === 'd') {
-
-			$scope.state.filteredKillers = $scope.state.killers.filter((el) => el.duration > 20);
-		}
+	$scope.filter = function (type) {
+		$scope.filterBy = type;
+		filterKillers($scope.state, type);
 	}
 });
+function isOkTime(item) {
+	return item.duration < 5;
+}
+function isWarnTime(item) {
+	return item.duration >= 5 && item.duration < 20;
+}
+function isDangerTime(item) {
+	return item.duration >= 20;
+}
+function filterKillers(state, type) {
+	if (type === 'd') {
+		state.killers = state.allKillers.filter(isDangerTime);
+	} else if (type === 'w') {
+		state.killers = state.allKillers.filter(isWarnTime);
+	} else if (type === 'o') {
+		state.killers = state.allKillers.filter(isOkTime);
+	} else if (type === 'c') {
+		state.filterBy = null;
+		state.killers = state.allKillers;
+	}
+	return state;
+}
 function calculateDuration(item) {
 	var duration = 0;
 	if (item.stopDate) {
@@ -31,26 +53,17 @@ function calculateDuration(item) {
 }
 function countCategories(killers, counters) {
 	killers.forEach(function (item) {
-		if (item.duration > 20) {
+		if (isDangerTime(item)) {
 			counters.dangers++;
 			return;
 		}
-		if (item.duration > 5) {
+		if (isWarnTime(item)) {
 			counters.warnings++;
 			return;
 		}
 		counters.ok++;
 	})
 }
-phonecatApp.filter('diff', function () {
-	return function (item) {
-		if (item.stopDate) {
-			var a = moment(item.stopDate).diff(moment(item.startDate), 'minutes');
-			return moment.duration(moment(item.stopDate).diff(moment(item.startDate))).humanize()
-		}
-		return moment.duration(moment().diff(moment(item.startDate))).humanize()
-	}
-});
 phonecatApp.component('metric', {
 	bindings: {
 		icon: '=',
@@ -92,8 +105,8 @@ phonecatApp.component('killers', {
 			item.showParams = !item.showParams;
 		}
 		this.calculateClassFromDuration = function (item) {
-			if (item.duration > 20) return 'text-danger';
-			if (item.duration > 5) return 'text-warning';
+			if (isDangerTime(item)) return 'text-danger';
+			if (isWarnTime(item)) return 'text-warning';
 			return '';
 		}
 	},

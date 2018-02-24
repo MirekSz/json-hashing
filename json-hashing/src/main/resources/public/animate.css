@@ -3,6 +3,7 @@
   -webkit-transition:0.5s linear all;
   transition:0.5s linear all;
 }
+
 .repeat-item.ng-enter,
 .repeat-item.ng-leave.ng-leave-active {
   opacity:0;

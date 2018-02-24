@@ -5,16 +5,16 @@
 		</div>
 		<div class="timeline-panel">
 			<div class="timeline-heading">
-				<div class="float-right ">
+				<div class="float-right text-muted">
 					<i class="fas fa-user"></i> {{item.operator}}
 					<span ng-if="item.startDate">
 						<br/>
-						<i class="fab fa-font-awesome-flag"></i> {{item.stopDate}}</span>
+						<i class="fab fa-font-awesome-flag "></i> {{item.stopDate}}</span>
 				</div>
-				<h4 class="timeline-title" ng-class="$ctrl.calculateClassFromDuration(item)">{{item.startDate}} ({{item | diff}})</h4>
+				<h4 class="timeline-title" ng-class="$ctrl.calculateClassFromDuration(item)">{{item.startDate}} ({{item.duration}} minutes)</h4>
 				<small class="text-muted">
 					<a ng-click="$ctrl.showParams(item)" href="">
-						<i class="glyphicon glyphicon-time"></i>{{item.service}}_{{item.methodName}}</a>
+						{{item.service}}_{{item.methodName}}</a>
 				</small>
 			</div>
 			<div class="timeline-body">
