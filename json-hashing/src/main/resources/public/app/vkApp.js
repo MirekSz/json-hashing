@@ -20,6 +20,11 @@ phonecatApp.controller('KillersController', function CartController($scope, $int
 		filterKillers($scope.state, type);
 	}
 });
+phonecatApp.filter('humanize', function () {
+	return function (item) {
+		return item.duration +' minutes'
+	}
+});
 function isOkTime(item) {
 	return item.duration < 5;
 }

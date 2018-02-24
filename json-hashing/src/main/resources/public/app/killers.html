@@ -11,7 +11,7 @@
 						<br/>
 						<i class="fab fa-font-awesome-flag "></i> {{item.stopDate}}</span>
 				</div>
-				<h4 class="timeline-title" ng-class="$ctrl.calculateClassFromDuration(item)">{{item.startDate}} ({{item.duration}} minutes)</h4>
+				<h4 class="timeline-title" ng-class="$ctrl.calculateClassFromDuration(item)">{{item.startDate}} ({{item | humanize}})</h4>
 				<small class="text-muted">
 					<a ng-click="$ctrl.showParams(item)" href="">
 						{{item.service}}_{{item.methodName}}</a>
