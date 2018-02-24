@@ -30,18 +30,19 @@ public class HTMLController {
 		map.put("backups", Application.CURRENT_OPERATIONS_REGION.getLocalMapStats().getBackupEntryCount());
 		map.put("local", Application.CURRENT_OPERATIONS_REGION.getLocalMapStats().getOwnedEntryCount());
 		map.put("size", Application.CURRENT_OPERATIONS_REGION.size());
-		map.put("killers", Application.CURRENT_OPERATIONS_REGION.entrySet().stream().map(i -> i.getValue()).collect(Collectors.toList()));
+		map.put("killers", Application.CURRENT_OPERATIONS_REGION.entrySet().stream().map(i -> i.getValue())
+				.collect(Collectors.toList()));
 		if (ssEmitter != null) {
 			ssEmitter.send(map);
 		}
 
 	}
 
-	@RequestMapping("/")
+	@RequestMapping("/hashing")
 	public String welcome(final Map<String, Object> model) {
 		model.put("message", "Abc");
 		model.put("appVersion", appVersion);
-		return "home";
+		return "hashing";
 	}
 
 	@ResponseBody
@@ -51,8 +52,8 @@ public class HTMLController {
 		return ssEmitter;
 	}
 
-	@RequestMapping("/stats")
+	@RequestMapping("/")
 	public String stats() {
-		return "stats";
+		return "vk";
 	}
 }

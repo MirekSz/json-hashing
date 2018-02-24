@@ -4,34 +4,39 @@ phonecatApp.controller('KillersController', function CartController($scope, $int
 	var source = new EventSource('/stream');
 	source.onmessage = function (event) {
 		var json = JSON.parse(event.data)
-		json.counters = {ok:0,warnings:0,dangers:0}
+		json.counters = { ok: 0, warnings: 0, dangers: 0 }
 		json.killers.forEach(calculateDuration);
 		countCategories(json.killers, json.counters);
 		$timeout(function () {
-			$scope.state=json;
+			$scope.state = json;
 		}, 1);
 	}
 
-	$scope.state = { members: 0, backups: 0, local: 0, size: 0, membersView: []};
+	$scope.state = { members: 0, backups: 0, local: 0, size: 0, membersView: [] };
+	this.filter = function (type) {
+		if (type === 'd') {
 
-});
-function calculateDuration(item){
-	var duration=0;
-	if (item.stopDate) {
-		duration= moment(item.stopDate).diff(moment(item.startDate),'minutes');
-	}else{
-		duration= moment().diff(moment(item.startDate),'minutes');
+			$scope.state.filteredKillers = $scope.state.killers.filter((el) => el.duration > 20);
+		}
 	}
-	item.duration=duration;
+});
+function calculateDuration(item) {
+	var duration = 0;
+	if (item.stopDate) {
+		duration = moment(item.stopDate).diff(moment(item.startDate), 'minutes');
+	} else {
+		duration = moment().diff(moment(item.startDate), 'minutes');
+	}
+	item.duration = duration;
 }
-function countCategories(killers, counters){
-	killers.forEach(function(item){
-		if(item.duration>5){
-			counters.warnings++;
+function countCategories(killers, counters) {
+	killers.forEach(function (item) {
+		if (item.duration > 20) {
+			counters.dangers++;
 			return;
 		}
-		if(item.duration>20){
-			counters.dangers++;
+		if (item.duration > 5) {
+			counters.warnings++;
 			return;
 		}
 		counters.ok++;
@@ -40,7 +45,7 @@ function countCategories(killers, counters){
 phonecatApp.filter('diff', function () {
 	return function (item) {
 		if (item.stopDate) {
-			var a=moment(item.stopDate).diff(moment(item.startDate),'minutes');
+			var a = moment(item.stopDate).diff(moment(item.startDate), 'minutes');
 			return moment.duration(moment(item.stopDate).diff(moment(item.startDate))).humanize()
 		}
 		return moment.duration(moment().diff(moment(item.startDate))).humanize()
@@ -64,29 +69,14 @@ phonecatApp.component('metric', {
 			}
 		}, true);
 	},
-	template: `
-				<i class="{{$ctrl.icon}} fa-4x"></i>
-				<h4>
-					{{$ctrl.title}}: <span class="text-primary">{{$ctrl.data}}</span>
-				</h4>
-				<canvas></canvas>
-		  `
+	templateUrl: 'app/metric.html'
 });
 phonecatApp.component('list', {
 	bindings: {
 		data: '=',
 		title: '=',
 	},
-	template: `
-			<div class="card">
-			<div class="card-header">{{$ctrl.title}}</div>
-			<div class="card-body">
-				<ul class="list-group list-group-flush">
-					<li ng-repeat="item in $ctrl.data" class="list-group-item">{{item}}</li>
-				</ul>
-			</div>
-		</div>
-		`
+	templateUrl: 'app/list.html'
 });
 phonecatApp.component('killers', {
 	bindings: {
@@ -101,39 +91,13 @@ phonecatApp.component('killers', {
 		this.showParams = function (item) {
 			item.showParams = !item.showParams;
 		}
-		this.calculateClassFromDuration = function(item) {
-			if (item.duration > 5) return 'text-warning';
+		this.calculateClassFromDuration = function (item) {
 			if (item.duration > 20) return 'text-danger';
+			if (item.duration > 5) return 'text-warning';
 			return '';
 		}
 	},
-	template: `
-	<ul class="timeline">
-	<li class="timeline-inverted repeat-item" ng-repeat="item in $ctrl.data|orderBy:sortByDate:true track by item.id ">
-		<div class="timeline-badge" ng-class="{ 'success': item.type=='F', 'info': item.type=='A', 'warning': item.type=='T' }">
-			{{item.type}}
-		</div>
-		<div class="timeline-panel">
-			<div class="timeline-heading">
-				<div class="float-right ">
-					<i class="fas fa-user"></i> {{item.operator}}
-					<span ng-if="item.startDate">
-						<br/>
-						<i class="fab fa-font-awesome-flag"></i> {{item.stopDate}}</span>
-				</div>
-				<h4 class="timeline-title" ng-class="$ctrl.calculateClassFromDuration(item)">{{item.startDate}} ({{item | diff}})</h4>
-				<small class="text-muted" >
-					<a ng-click="$ctrl.showParams(item)" href="">
-						<i class="glyphicon glyphicon-time"></i>{{item.service}}_{{item.methodName}}</a>
-				</small>
-			</div>
-			<div class="timeline-body">
-				<textarea ng-if="item.showParams" rows="2" readonly class="form-control col-8">{{item.arguments}}</textarea>
-			</div>
-		</div>
-	</li>
-</ul>
-		`
+	templateUrl: 'app/killers.html'
 });
 
 function createChart(target) {
