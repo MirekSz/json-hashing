@@ -39,17 +39,19 @@ public class Application {
 		// CURRENT_OPERATIONS_REGION.clear();
 
 		Thread.sleep(10000);
-		CURRENT_OPERATIONS_REGION.put("1", prepareParams());
 		Map<String, String> prepareParams = prepareParams();
+		CURRENT_OPERATIONS_REGION.put("1", prepareParams);
 		prepareParams.put("type", "T");
-		Thread.sleep(10000);
-		prepareParams.put(STOP_DATE_PARAM, "2018-12-03 15:13");
-		CURRENT_OPERATIONS_REGION.put("2", prepareParams);
+		Thread.sleep(15000);
+		prepareParams.put(STOP_DATE_PARAM, "2018-01-04 15:13");
+		CURRENT_OPERATIONS_REGION.put("1", prepareParams);
 		Map<String, String> prepareParams2 = prepareParams();
 		prepareParams2.put("type", "A");
-		prepareParams2.put(STOP_DATE_PARAM, "2018-12-03 16:16");
-		Thread.sleep(10000);
-		CURRENT_OPERATIONS_REGION.put("3", prepareParams2);
+		prepareParams2.put(STOP_DATE_PARAM, "2018-01-06 16:16");
+		CURRENT_OPERATIONS_REGION.put("2", prepareParams2);
+		Thread.sleep(15000);
+		Map<String, String> prepareParams3 = prepareParams();
+		CURRENT_OPERATIONS_REGION.put("3", prepareParams3);
 	}
 
 	protected static final String STOP_DATE_PARAM = "stopDate";
@@ -66,8 +68,7 @@ public class Application {
 		operationInfo.put(SERVICE_PARAM, "org.springframework.boot.autoconfigure.hazelcast.HazelcastAutoConfiguration");
 		operationInfo.put(METHOD_NAME_PARAM, "insert");
 		operationInfo.put(ARGUMENTS_PARAM, "");
-		operationInfo.put(START_DATE_PARAM, "2018-12-03 14:56");
-		operationInfo.put(STOP_DATE_PARAM, "2018-12-03 14:59");
+		operationInfo.put(START_DATE_PARAM, "2018-01-03 14:56");
 		operationInfo.put("type", "F");
 		operationInfo.put("id", System.nanoTime() + "");
 		return operationInfo;

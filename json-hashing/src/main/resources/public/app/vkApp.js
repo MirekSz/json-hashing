@@ -5,7 +5,7 @@ phonecatApp.controller('KillersController', function CartController($scope, $int
 	source.onmessage = function (event) {
 		var json = JSON.parse(event.data)
 		json.allKillers = json.killers;
-		json.counters = { ok: 0, warnings: 0, dangers: 0 }
+		json.counters = { ok: 0, warnings: 0, dangers: 0, unfinished: 0 }
 		json.killers.forEach(calculateDuration);
 		countCategories(json.killers, json.counters);
 
@@ -22,7 +22,7 @@ phonecatApp.controller('KillersController', function CartController($scope, $int
 });
 phonecatApp.filter('humanize', function () {
 	return function (item) {
-		return item.duration +' minutes'
+		return item.duration + ' minutes'
 	}
 });
 function isOkTime(item) {
@@ -41,6 +41,8 @@ function filterKillers(state, type) {
 		state.killers = state.allKillers.filter(isWarnTime);
 	} else if (type === 'o') {
 		state.killers = state.allKillers.filter(isOkTime);
+	} else if (type === 'u') {
+		state.killers = state.allKillers.filter(function (e) { return e.stopDate == null; });
 	} else if (type === 'c') {
 		state.filterBy = null;
 		state.killers = state.allKillers;
@@ -58,6 +60,9 @@ function calculateDuration(item) {
 }
 function countCategories(killers, counters) {
 	killers.forEach(function (item) {
+		if (!item.stopDate) {
+			counters.unfinished++;
+		}
 		if (isDangerTime(item)) {
 			counters.dangers++;
 			return;
