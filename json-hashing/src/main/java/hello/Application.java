@@ -43,15 +43,18 @@ public class Application {
 		CURRENT_OPERATIONS_REGION.put("1", prepareParams);
 		prepareParams.put("type", "T");
 		Thread.sleep(15000);
-		prepareParams.put(STOP_DATE_PARAM, "2018-01-04 15:13");
-		CURRENT_OPERATIONS_REGION.put("1", prepareParams);
+
 		Map<String, String> prepareParams2 = prepareParams();
 		prepareParams2.put("type", "A");
-		prepareParams2.put(STOP_DATE_PARAM, "2018-01-06 16:16");
+		prepareParams2.put(STOP_DATE_PARAM, "2018-01-03 15:06");
 		CURRENT_OPERATIONS_REGION.put("2", prepareParams2);
 		Thread.sleep(15000);
 		Map<String, String> prepareParams3 = prepareParams();
+		prepareParams3.put(STOP_DATE_PARAM, "2018-01-03 14:59");
 		CURRENT_OPERATIONS_REGION.put("3", prepareParams3);
+
+		prepareParams.put(STOP_DATE_PARAM, "2018-01-04 15:13");
+		CURRENT_OPERATIONS_REGION.put("1", prepareParams);
 	}
 
 	protected static final String STOP_DATE_PARAM = "stopDate";

@@ -26,18 +26,6 @@
 			<nav>
 				<ul class="nav nav-pills float-right">
 					<li class="nav-item" ng-click="filter('d')" title="time >= 20m">
-						<span class="fa-layers fa-fw fa-4x">
-							<i class="fas fa-envelope"></i>
-							<span class="fa-layers-counter">3</span>
-						</span>
-						<a class="nav-link text-danger" href="#">
-							<span class="fa-layers fa-fw fa-2x">
-								<i class="fas fa-lightbulb"></i>
-								<span class="fa-layers-counter">{{state.counters.dangers}}</span>
-							</span>
-						</a>
-					</li>
-					<li class="nav-item" ng-click="filter('d')" title="time >= 20m">
 						<a class="nav-link text-danger h3" href="#">
 							<i class="fas fa-lightbulb"></i>
 							{{state.counters.dangers}} </a>
@@ -53,14 +41,20 @@
 							{{state.counters.ok}}</a>
 					</li>
 					<li class="nav-item" ng-click="filter('u')" title="In progress">
-						<a class="nav-link h3 text-info" href="#">
-							<i class="fas fa-hourglass-half"></i>
-							{{state.counters.unfinished}} </a>
+						<a class="nav-link text-info" href="#">
+							<span class="fa-layers fa-fw fa-2x">
+								<i class="fas fa-hourglass-half"></i>
+								<span class="fa-layers-counter bg-info">{{state.counters.unfinished}}</span>
+							</span>
+						</a>
 					</li>
 					<li class="nav-item" ng-click="filter('c')" title="All">
-						<a class="nav-link h3 text-primary" href="#">
-							<i class="fas fa-eye"></i>
-							{{state.size}}</a>
+						<a class="nav-link  text-primary" href="#">
+							<span class="fa-layers fa-fw fa-2x">
+								<i class="fas fa-eye"></i>
+								<span class="fa-layers-counter bg-primary">{{state.size}}</span>
+							</span>
+						</a>
 					</li>
 				</ul>
 			</nav>
