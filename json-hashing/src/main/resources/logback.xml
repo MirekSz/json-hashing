@@ -10,7 +10,7 @@
 	</appender>
 
 	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
-	      <file>${jboss.server.log.dir}/next-www.log</file>
+	      <file>./vk.log</file>
 	      <append>true</append>
 	      <encoder>
 	         <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>

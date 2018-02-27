@@ -70,4 +70,8 @@ body {
     border-bottom: 0;
   }
 }
-
+.text-muted2 > a{
+	white-space: nowrap;
+    overflow:hidden !important;
+    text-overflow: ellipsis;
+}

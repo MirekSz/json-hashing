@@ -1,7 +1,10 @@
 var phonecatApp = angular.module('killers', ['ngAnimate']);
+setTimeout(function(){
+	window.location.reload();
+},1000*60*60)
 
 phonecatApp.controller('KillersController', function CartController($scope, $interval, $timeout) {
-	var source = new EventSource('/stream');
+	var source = new EventSource('stream');
 	source.onmessage = function (event) {
 		var json = JSON.parse(event.data)
 		json.allKillers = json.killers;
@@ -162,3 +165,12 @@ function updateChart(chart, val) {
 	});
 	chart.update();
 }
+phonecatApp.component('vkApp', {
+	templateUrl: 'app/main.html'
+});
+$(document).ready(function(){
+	$("#vkApp").html('<div><vk-app/></div>')
+	angular.element(function() {
+      angular.bootstrap(document, ['killers']);
+    });
+})

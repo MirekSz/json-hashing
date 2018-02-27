@@ -32,29 +32,28 @@ public class Application {
 		Config config = new Config();
 		config.getGroupConfig().setName("admin").setPassword("randomPaSS");
 		config.addMapConfig(new MapConfig("default").setMaxSizeConfig(new MaxSizeConfig(1000, MaxSizePolicy.PER_NODE))
-				.setEvictionPolicy(EvictionPolicy.LRU).setReadBackupData(true).setBackupCount(0)
-				.setAsyncBackupCount(1));
+				.setEvictionPolicy(EvictionPolicy.LRU).setReadBackupData(true).setBackupCount(0).setAsyncBackupCount(1));
 		HAZELCAST_INSTANCE = Hazelcast.newHazelcastInstance(config);
 		CURRENT_OPERATIONS_REGION = HAZELCAST_INSTANCE.getMap("current-operations-region");
 		// CURRENT_OPERATIONS_REGION.clear();
 
-		Thread.sleep(10000);
-		Map<String, String> prepareParams = prepareParams();
-		CURRENT_OPERATIONS_REGION.put("1", prepareParams);
-		prepareParams.put("type", "T");
-		Thread.sleep(15000);
-
-		Map<String, String> prepareParams2 = prepareParams();
-		prepareParams2.put("type", "A");
-		prepareParams2.put(STOP_DATE_PARAM, "2018-01-03 15:06");
-		CURRENT_OPERATIONS_REGION.put("2", prepareParams2);
-		Thread.sleep(15000);
-		Map<String, String> prepareParams3 = prepareParams();
-		prepareParams3.put(STOP_DATE_PARAM, "2018-01-03 14:59");
-		CURRENT_OPERATIONS_REGION.put("3", prepareParams3);
-
-		prepareParams.put(STOP_DATE_PARAM, "2018-01-04 15:13");
-		CURRENT_OPERATIONS_REGION.put("1", prepareParams);
+		// Thread.sleep(10000);
+		// Map<String, String> prepareParams = prepareParams();
+		// CURRENT_OPERATIONS_REGION.put("1", prepareParams);
+		// prepareParams.put("type", "T");
+		// Thread.sleep(15000);
+		//
+		// Map<String, String> prepareParams2 = prepareParams();
+		// prepareParams2.put("type", "A");
+		// prepareParams2.put(STOP_DATE_PARAM, "2018-01-03 15:06");
+		// CURRENT_OPERATIONS_REGION.put("2", prepareParams2);
+		// Thread.sleep(15000);
+		// Map<String, String> prepareParams3 = prepareParams();
+		// prepareParams3.put(STOP_DATE_PARAM, "2018-01-03 14:59");
+		// CURRENT_OPERATIONS_REGION.put("3", prepareParams3);
+		//
+		// prepareParams.put(STOP_DATE_PARAM, "2018-01-04 15:13");
+		// CURRENT_OPERATIONS_REGION.put("1", prepareParams);
 	}
 
 	protected static final String STOP_DATE_PARAM = "stopDate";
