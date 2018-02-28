@@ -1,7 +1,4 @@
 var phonecatApp = angular.module('killers', ['ngAnimate']);
-setTimeout(function(){
-	window.location.reload();
-},1000*60*60)
 
 phonecatApp.controller('KillersController', function CartController($scope, $interval, $timeout) {
 	var source = new EventSource('stream');
