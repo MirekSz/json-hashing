@@ -9,7 +9,7 @@ phonecatApp.controller('KillersController', function CartController($scope, $int
 			countCategories(json.killers, json.counters);
 			$scope.state = filterKillers(json, $scope.filterBy);
 		});
-	},5000)
+	},10000)
 	$scope.state = { members: 0, backups: 0, local: 0, size: 0, membersView: [] };
 	$scope.filter = function (type) {
 		$scope.filterBy = type;
