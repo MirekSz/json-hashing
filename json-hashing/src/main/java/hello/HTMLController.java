@@ -1,12 +1,9 @@
 
 package hello;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,22 +18,22 @@ public class HTMLController {
 
 	private SseEmitter ssEmitter;
 
-	@Scheduled(fixedDelay = 5000, initialDelay = 10000)
-	private void getStats() throws Exception {
-		Map<String, Object> map = new HashMap<>();
-		map.put("members", Application.HAZELCAST_INSTANCE.getCluster().getMembers().size());
-		map.put("membersView", Application.HAZELCAST_INSTANCE.getCluster().getMembers().stream()
-				.map(i -> i.getAddress().getHost() + ":" + i.getAddress().getPort()).collect(Collectors.toList()));
-		map.put("backups", Application.CURRENT_OPERATIONS_REGION.getLocalMapStats().getBackupEntryCount());
-		map.put("local", Application.CURRENT_OPERATIONS_REGION.getLocalMapStats().getOwnedEntryCount());
-		map.put("size", Application.CURRENT_OPERATIONS_REGION.size());
-		map.put("killers", Application.CURRENT_OPERATIONS_REGION.entrySet().stream().map(i -> i.getValue())
-				.collect(Collectors.toList()));
-		if (ssEmitter != null) {
-			ssEmitter.send(map);
-		}
-
-	}
+	// @Scheduled(fixedDelay = 5000, initialDelay = 10000)
+	// private void getStats() throws Exception {
+	// Map<String, Object> map = new HashMap<>();
+	// map.put("members", Application.HAZELCAST_INSTANCE.getCluster().getMembers().size());
+	// map.put("membersView", Application.HAZELCAST_INSTANCE.getCluster().getMembers().stream()
+	// .map(i -> i.getAddress().getHost() + ":" + i.getAddress().getPort()).collect(Collectors.toList()));
+	// map.put("backups", Application.CURRENT_OPERATIONS_REGION.getLocalMapStats().getBackupEntryCount());
+	// map.put("local", Application.CURRENT_OPERATIONS_REGION.getLocalMapStats().getOwnedEntryCount());
+	// map.put("size", Application.CURRENT_OPERATIONS_REGION.size());
+	// map.put("killers", Application.CURRENT_OPERATIONS_REGION.entrySet().stream().map(i -> i.getValue())
+	// .collect(Collectors.toList()));
+	// if (ssEmitter != null) {
+	// ssEmitter.send(map);
+	// }
+	//
+	// }
 
 	@RequestMapping("/hashing")
 	public String welcome(final Map<String, Object> model) {

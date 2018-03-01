@@ -1,19 +1,15 @@
 var phonecatApp = angular.module('killers', ['ngAnimate']);
 
 phonecatApp.controller('KillersController', function CartController($scope, $interval, $timeout) {
-	var source = new EventSource('stream');
-	source.onmessage = function (event) {
-		var json = JSON.parse(event.data)
-		json.allKillers = json.killers;
-		json.counters = { ok: 0, warnings: 0, dangers: 0, unfinished: 0 }
-		json.killers.forEach(calculateDuration);
-		countCategories(json.killers, json.counters);
-
-		$timeout(function () {
+	$interval(function(){
+		$.get( "state", function( json ) {
+			json.allKillers = json.killers;
+			json.counters = { ok: 0, warnings: 0, dangers: 0, unfinished: 0 }
+			json.killers.forEach(calculateDuration);
+			countCategories(json.killers, json.counters);
 			$scope.state = filterKillers(json, $scope.filterBy);
-		}, 1);
-	}
-
+		});
+	},5000)
 	$scope.state = { members: 0, backups: 0, local: 0, size: 0, membersView: [] };
 	$scope.filter = function (type) {
 		$scope.filterBy = type;
