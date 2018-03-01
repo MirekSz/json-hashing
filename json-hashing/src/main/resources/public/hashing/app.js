@@ -19,14 +19,39 @@ hashingApp.controller('HashingController', function HashingController($scope,
 	};
 });
 
+hashingApp.component('field', {
+	bindings: {
+		form: '=',
+		data: '=',
+		name: '=',
+	},
+	controller: function ($scope) {
+		this.$onInit = function () {
+			console.log($scope)
+		};
+		this.change = function () {
+			$scope.$ctrl.form[$scope.$ctrl.name].$setDirty();
+		};
+	},
+	template: `
+	  <div class="form-group">
+    <label>
+    Size (integer 0 - 10):</label>
+    <input class="form-control" required type="number" ng-change="$ctrl.change()" ng-model="$ctrl.data[$ctrl.name]" name="age" ng-class="{'is-invalid':$ctrl.form[$ctrl.name].$invalid && $ctrl.form[$ctrl.name].$dirty ,'is-valid':$ctrl.form[$ctrl.name].$valid}"
+           /><br />
+<small class="form-text text-muted">
+      </small>
+  </div>
+	`
+});
+
 hashingApp.directive('username', function($q, $timeout) {
 	  return {
 	    require: 'ngModel',
 	    link: function(scope, elm, attrs, ctrl) {
 	      var usernames = ['Jim', 'John', 'Jill', 'Jackie'];
-
 	      ctrl.$asyncValidators.username = function(modelValue, viewValue) {
-
+	    	  ctrl.$error={}
 	        if (ctrl.$isEmpty(modelValue)) {
 	          // consider empty model valid
 	          return $q.resolve();
@@ -40,6 +65,7 @@ hashingApp.directive('username', function($q, $timeout) {
 	            // The username is available
 	            def.resolve();
 	          } else {
+	        	  ctrl.$error.msg = 'Imie zajete'
 	            def.reject();
 	          }
 

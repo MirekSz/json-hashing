@@ -59,16 +59,16 @@
     {{result | json}}
 </div>
 </div>
-
+	 <field label="'Size'" name="'age'" form="form" data="person"/>
   <div class="form-group">
     <label>
     Size (integer 0 - 10):
     <input class="form-control" required type="number" ng-model="person.age" name="age" ng-class="{'is-invalid':form.age.$invalid&&form.age.$dirty,'is-valid':form.age.$valid}"
            min="0" max="10"  />{{size}}</label><br />
-<small class="form-text text-muted">
-    <span ng-show="form.age.$error.integer">The value is not a valid integer!</span>
-    <span ng-show="form.age.$error.min || form.age.$error.max">
-      The value must be in range 0 to 10!</span>
+	<small class="form-text text-muted">
+    	<span ng-show="form.age.$error.integer">The value is not a valid integer!</span>
+    	<span ng-show="form.age.$error.min || form.age.$error.max">
+      	The value must be in range 0 to 10!</span>
       </small>
   </div>
 
@@ -78,12 +78,11 @@
     <input class="form-control" required type="text" ng-model="person.name" name="name" username ng-class="{'is-invalid':form.name.$invalid&&form.name.$dirty,'is-valid':form.name.$valid}"/></label><br />
     <small class="form-text text-muted">
     <span ng-show="form.name.$pending.username">Checking if this name is available...</span>
-    <span ng-show="form.name.$error.username">This username is already taken!</span>
+    <span ng-show="form.name.$error.username">This username is already taken! {{form.name.$error.msg}}</span>
     </small>
   </div>
 <button class="btn btn-primary" type="submit" ng-disabled="form.$invalid || form.$pending || form.$pristine">sub</button>
 </form>
-
 	<br/>
 	<br/>
 	<div style="display:none">
