@@ -18,6 +18,13 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular-animate.js"></script>
+	<script type="text/javascript" th:src="@{/hashing/app.js}"></script>
 <script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 	<script th:inline="javascript">var appVersion = [[${appVersion}]]; </script>
 <script>
@@ -41,11 +48,45 @@
 			  </script>
 </head>
 <body>
-<div class="bg-light container " style="padding-top:20px;padding-bottom:20px">
-	<textarea id="json" idows="" cols="">{"id":1,"content":"asdsad"}</textarea>
-	<button id="send">Send</button>
+<div class="bg-light container " style="padding-top:20px;padding-bottom:20px" ng-app="hashing">
+
+  <form ng-submit="submit()" name="form" class="css-form" novalidate ng-controller="HashingController">
+  <div class="row">
+  <div class="alert alert-success col-sm-12 col-md-6" role="alert">
+   {{request | json}}
+</div>
+<div class="alert alert-info col-sm-12 col-md-6" role="alert">
+    {{result | json}}
+</div>
+</div>
+
+  <div class="form-group">
+    <label>
+    Size (integer 0 - 10):
+    <input class="form-control" required type="number" ng-model="person.age" name="age" ng-class="{'is-invalid':form.age.$invalid&&form.age.$dirty,'is-valid':form.age.$valid}"
+           min="0" max="10"  />{{size}}</label><br />
+<small class="form-text text-muted">
+    <span ng-show="form.age.$error.integer">The value is not a valid integer!</span>
+    <span ng-show="form.age.$error.min || form.age.$error.max">
+      The value must be in range 0 to 10!</span>
+      </small>
+  </div>
+
+  <div class="form-group">
+    <label>
+    Username:
+    <input class="form-control" required type="text" ng-model="person.name" name="name" username ng-class="{'is-invalid':form.name.$invalid&&form.name.$dirty,'is-valid':form.name.$valid}"/></label><br />
+    <small class="form-text text-muted">
+    <span ng-show="form.name.$pending.username">Checking if this name is available...</span>
+    <span ng-show="form.name.$error.username">This username is already taken!</span>
+    </small>
+  </div>
+<button class="btn btn-primary" type="submit" ng-disabled="form.$invalid || form.$pending || form.$pristine">sub</button>
+</form>
+
 	<br/>
 	<br/>
+	<div style="display:none">
 					<div class="row">
 				<div class="col-6">
 					<div class="card  border-0 rounded"
@@ -59,7 +100,7 @@
 							</div>
 							<h4 class="card-title">STREAMSOFT</h4>
 														<hr />
-							
+
 							<span class="text-secondary">NIP:</span> 9200100096<br /> <span
 								class="text-secondary">Nazwa:</span> STREAMSOFT D CHOJNACKI I
 							WSPÓLNICY SPÓŁKA JAWNA<br /> <span class="text-secondary">Miejscowość:</span>
@@ -79,7 +120,7 @@
 							</div>
 							<h4 class="card-title">STREAMSOFT</h4>
 														<hr />
-							
+
 							<span class="text-secondary">NIP:</span> 9200100096<br /> <span
 								class="text-secondary">Nazwa:</span> STREAMSOFT D CHOJNACKI I
 							WSPÓLNICY SPÓŁKA JAWNA<br /> <span class="text-secondary">Miejscowość:</span>
@@ -102,7 +143,7 @@
 							</div>
 							<h4 class="card-title">STREAMSOFT</h4>
 														<hr />
-							
+
 							<span class="text-secondary">NIP:</span> 9200100096<br /> <span
 								class="text-secondary">Nazwa:</span> STREAMSOFT D CHOJNACKI I
 							WSPÓLNICY SPÓŁKA JAWNA<br /> <span class="text-secondary">Miejscowość:</span>
@@ -122,7 +163,7 @@
 							</div>
 							<h4 class="card-title">STREAMSOFT</h4>
 														<hr />
-							
+
 							<span class="text-secondary">NIP:</span> 9200100096<br /> <span
 								class="text-secondary">Nazwa:</span> STREAMSOFT D CHOJNACKI I
 							WSPÓLNICY SPÓŁKA JAWNA<br /> <span class="text-secondary">Miejscowość:</span>
@@ -132,7 +173,7 @@
 				</div>
 			</div>
 		</div>
-
+</div>
 </body>
 <script>
 function initJSONParser(e){var t=function(e,t){this.keySize=e/32,this.iterationCount=t};t.prototype.generateKey=function(t,r){return e.PBKDF2(r,e.enc.Hex.parse(t),{keySize:this.keySize,iterations:this.iterationCount})},t.prototype.encrypt=function(t,r,n,i){var o=this.generateKey(t,n);return e.AES.encrypt(i,o,{iv:e.enc.Hex.parse(r)}).ciphertext.toString(e.enc.Base64)},t.prototype.decrypt=function(t,r,n,i){var o=this.generateKey(t,n),a=e.lib.CipherParams.create({ciphertext:e.enc.Base64.parse(i)});return e.AES.decrypt(a,o,{iv:e.enc.Hex.parse(r)}).toString(e.enc.Utf8)};window.prepareJSONRequest=function(r){var n=e.lib.WordArray.random(16).toString(e.enc.Hex),i=e.lib.WordArray.random(16).toString(e.enc.Hex);return{sha:n,jwt:i,kerberos:new t(128,100).encrypt(i,n,appVersion,JSON.stringify(r))}}}

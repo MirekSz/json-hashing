@@ -19,8 +19,8 @@ public class RestGreetingController {
 
 	@RequestMapping("/greeting")
 	@ResponseBody
-	public Greeting greeting(@RequestBody final Greeting g) {
-		return g;
+	public Person greeting(@RequestBody final Person person) {
+		return person;
 	}
 
 	@RequestMapping("/state")
