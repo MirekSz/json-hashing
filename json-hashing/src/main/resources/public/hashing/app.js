@@ -23,7 +23,7 @@ hashingApp.component('field', {
 	bindings: {
 		form: '=',
 		data: '=',
-		name: '=',
+		name: '@',
 	},
 	controller: function ($scope) {
 		this.$onInit = function () {
