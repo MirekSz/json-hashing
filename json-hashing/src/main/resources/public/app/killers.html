@@ -1,5 +1,5 @@
 <ul class="timeline">
-	<li class="timeline-inverted repeat-item" ng-repeat="item in $ctrl.data|orderBy:sortByDate:true track by item.id ">
+	<li class="timeline-inverted repeat-item" ng-repeat="item in $ctrl.data | filterByType:$ctrl.showType | orderBy:sortByDate:true track by item.id ">
 		<div class="timeline-badge" ng-class="{ 'success': item.type=='F', 'info': item.type=='A', 'warning': item.type=='T', 'primary': item.type=='Q' }">
 			{{item.type}}
 		</div>

@@ -3,11 +3,10 @@ var phonecatApp = angular.module('killers', ['ngAnimate']);
 phonecatApp.controller('KillersController', function CartController($scope, $interval, $timeout) {
 	$interval(function(){
 		$.get( "state", function( json ) {
-			json.allKillers = json.killers;
 			json.counters = { ok: 0, warnings: 0, dangers: 0, unfinished: 0 }
 			json.killers.forEach(calculateDuration);
 			countCategories(json.killers, json.counters);
-			$scope.state = filterKillers(json, $scope.filterBy);
+			$scope.state=json;
 		});
 	},10000)
 	$scope.state = { members: 0, backups: 0, local: 0, size: 0, membersView: [] };
@@ -15,6 +14,20 @@ phonecatApp.controller('KillersController', function CartController($scope, $int
 		$scope.filterBy = type;
 		filterKillers($scope.state, type);
 	}
+});
+phonecatApp.filter('filterByType', function() {
+	  return function(killers,type) {
+		  if (type === 'd') {
+				return killers.filter(isDangerTime);
+			} else if (type === 'w') {
+				return killers.filter(isWarnTime);
+			} else if (type === 'o') {
+				return killers.filter(isOkTime);
+			} else if (type === 'u') {
+				return killers.filter(function (e) { return e.stopDate == null; });
+			}
+			return killers;
+	  }
 });
 phonecatApp.filter('humanize', function () {
 	return function (item) {
@@ -30,21 +43,7 @@ function isWarnTime(item) {
 function isDangerTime(item) {
 	return item.duration >= 20;
 }
-function filterKillers(state, type) {
-	if (type === 'd') {
-		state.killers = state.allKillers.filter(isDangerTime);
-	} else if (type === 'w') {
-		state.killers = state.allKillers.filter(isWarnTime);
-	} else if (type === 'o') {
-		state.killers = state.allKillers.filter(isOkTime);
-	} else if (type === 'u') {
-		state.killers = state.allKillers.filter(function (e) { return e.stopDate == null; });
-	} else if (type === 'c') {
-		state.filterBy = null;
-		state.killers = state.allKillers;
-	}
-	return state;
-}
+
 function calculateDuration(item) {
 	var duration = 0;
 	if (item.stopDate) {
@@ -101,6 +100,7 @@ phonecatApp.component('killers', {
 	bindings: {
 		data: '=',
 		title: '=',
+		showType: '='
 	},
 	controller: function ($scope) {
 		$scope.sortByDate = function (item) {
