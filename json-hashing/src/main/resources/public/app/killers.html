@@ -1,5 +1,5 @@
 <ul class="timeline">
-	<li class="timeline-inverted repeat-item" ng-repeat="item in $ctrl.data | filterByType:$ctrl.showType | orderBy:sortByDate:true track by item.id ">
+	<li class="timeline-inverted repeat-item" ng-repeat="item in $ctrl.data | limitTo:limit | filterByType:$ctrl.showType | orderBy:sortByDate:true track by item.id ">
 		<div class="timeline-badge" ng-class="{ 'success': item.type=='F', 'info': item.type=='A', 'warning': item.type=='T', 'primary': item.type=='Q' }">
 			{{item.type}}
 		</div>
@@ -11,7 +11,7 @@
 						<br/>
 						<i class="fab fa-font-awesome-flag "></i> {{item.stopDate}}</span>
 				</div>
-				<h4 class="timeline-title" ng-class="$ctrl.calculateClassFromDuration(item)">{{item.startDate}} ({{item | humanize}})</h4>
+				<h4 class="timeline-title" ng-class="$ctrl.calculateClassFromDuration(item)"> {{item.startDate}} ({{item | humanize}})</h4>
 				<small class="text-muted">
 					<a ng-click="$ctrl.showParams(item)" href="">
 						{{item.service}}_{{item.methodName}}</a>
@@ -22,4 +22,6 @@
 			</div>
 		</div>
 	</li>
+	
 </ul>
+<button class="btn btn-primary w-100" ng-click="$ctrl.loadAll()">Load all</button>

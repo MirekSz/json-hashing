@@ -17,19 +17,14 @@
 						class="fas fa-lightbulb"></i> {{state.counters.ok}}
 				</a>
 				</li>
-				<li class="nav-item" ng-click="filter('u')" title="In progress">
-					<a class="nav-link text-info" href="#"> <span
-						class="fa-layers fa-fw fa-2x"> <i
-							class="fas fa-hourglass-half"></i> <span
-							class="fa-layers-counter bg-info">{{state.counters.unfinished}}</span>
-					</span>
+<li class="nav-item" ng-click="filter('u')" title="In progress">
+					<a class="nav-link text-info h3" href="#"><i
+							class="fas fa-hourglass-half"></i>{{state.counters.unfinished}}
 				</a>
 				</li>
 				<li class="nav-item" ng-click="filter('c')" title="All"><a
-					class="nav-link  text-primary" href="#"> <span
-						class="fa-layers fa-fw fa-2x"> <i class="fas fa-eye"></i> <span
-							class="fa-layers-counter bg-primary">{{state.size}}</span>
-					</span>
+					class="nav-link  text-primary h3" href="#">  <i class="fas fa-eye"></i>
+							{{state.size}}
 				</a></li>
 			</ul>
 		</nav>

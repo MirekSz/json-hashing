@@ -1,14 +1,17 @@
 var phonecatApp = angular.module('killers', ['ngAnimate']);
-
+function loadData($scope){
+	$.get( "state", function( json ) {
+		json.counters = { ok: 0, warnings: 0, dangers: 0, unfinished: 0 }
+		json.killers.forEach(calculateDuration);
+		countCategories(json.killers, json.counters);
+		$scope.state=json;
+	});
+}
 phonecatApp.controller('KillersController', function CartController($scope, $interval, $timeout) {
 	$interval(function(){
-		$.get( "state", function( json ) {
-			json.counters = { ok: 0, warnings: 0, dangers: 0, unfinished: 0 }
-			json.killers.forEach(calculateDuration);
-			countCategories(json.killers, json.counters);
-			$scope.state=json;
-		});
+		loadData($scope);
 	},10000)
+	loadData($scope);
 	$scope.state = { members: 0, backups: 0, local: 0, size: 0, membersView: [] };
 	$scope.filter = function (type) {
 		$scope.filterBy = type;
@@ -98,11 +101,14 @@ phonecatApp.component('list', {
 });
 phonecatApp.component('killers', {
 	bindings: {
-		data: '=',
+		data: '<',
 		title: '=',
 		showType: '='
 	},
 	controller: function ($scope) {
+		this.$onInit = function () {
+			$scope.limit=100;
+		};
 		$scope.sortByDate = function (item) {
 			var date = Date.parse(item.startDate);
 			return date;
@@ -114,6 +120,9 @@ phonecatApp.component('killers', {
 			if (isDangerTime(item)) return 'text-danger';
 			if (isWarnTime(item)) return 'text-warning';
 			return '';
+		}
+		this.loadAll = function(){
+			$scope.limit = $scope.$ctrl.data.length; 
 		}
 	},
 	templateUrl: 'app/killers.html'
