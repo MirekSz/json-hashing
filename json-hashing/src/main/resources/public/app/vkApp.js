@@ -8,10 +8,10 @@ function loadData($scope){
 	});
 }
 phonecatApp.controller('KillersController', function CartController($scope, $interval, $timeout) {
+	loadData($scope);
 	$interval(function(){
 		loadData($scope);
 	},10000)
-	loadData($scope);
 	$scope.state = { members: 0, backups: 0, local: 0, size: 0, membersView: [] };
 	$scope.filter = function (type) {
 		$scope.filterBy = type;

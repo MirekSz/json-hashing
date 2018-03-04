@@ -24,4 +24,4 @@
 	</li>
 	
 </ul>
-<button class="btn btn-primary w-100" ng-click="$ctrl.loadAll()">Load all</button>
+<button class="btn btn-primary w-100" ng-click="$ctrl.loadAll()" ng-if="limit < $ctrl.data.length"><i class="fas fa-download"></i> Load all</button>
