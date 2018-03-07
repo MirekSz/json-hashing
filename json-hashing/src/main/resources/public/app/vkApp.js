@@ -122,7 +122,7 @@ phonecatApp.component('killers', {
 			return '';
 		}
 		this.loadAll = function(){
-			$scope.limit = $scope.$ctrl.data.length; 
+			$scope.limit = $scope.$ctrl.data.length;
 		}
 	},
 	templateUrl: 'app/killers.html'

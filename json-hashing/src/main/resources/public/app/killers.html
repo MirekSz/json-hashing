@@ -1,5 +1,5 @@
 <ul class="timeline">
-	<li class="timeline-inverted repeat-item" ng-repeat="item in $ctrl.data | limitTo:limit | filterByType:$ctrl.showType | orderBy:sortByDate:true track by item.id ">
+	<li class="timeline-inverted repeat-item" ng-repeat="item in $ctrl.data | filterByType:$ctrl.showType | limitTo:limit | orderBy:sortByDate:true as results track by item.id ">
 		<div class="timeline-badge" ng-class="{ 'success': item.type=='F', 'info': item.type=='A', 'warning': item.type=='T', 'primary': item.type=='Q' }">
 			{{item.type}}
 		</div>
@@ -22,6 +22,5 @@
 			</div>
 		</div>
 	</li>
-	
 </ul>
-<button class="btn btn-primary w-100" ng-click="$ctrl.loadAll()" ng-if="limit < $ctrl.data.length"><i class="fas fa-download"></i> Load all</button>
+<button class="btn btn-primary w-100" ng-click="$ctrl.loadAll()" ng-if="limit < $ctrl.data.length && results.length >= limit"><i class="fas fa-download"></i> Load all</button>
