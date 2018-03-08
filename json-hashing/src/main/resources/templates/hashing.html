@@ -26,7 +26,10 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular-animate.js"></script>
 	<script type="text/javascript" th:src="@{/hashing/app.js}"></script>
+	<script type="text/javascript" src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+	<script type="text/javascript" src="https://bundle.run/babel-polyfill@6"></script>
 <script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+	<script type="text/javascript" th:src="@{/hashing/babel-online.js}"></script>
 	<script th:inline="javascript">var appVersion = [[${appVersion}]]; </script>
 <script>
 			  $(document).ready(function(){
