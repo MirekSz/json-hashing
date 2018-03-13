@@ -93,7 +93,6 @@ phonecatApp.component('metric', {
 			if (!$scope.$ctrl.chart) {
 				return
 			}
-			debugger
 			if($scope.$ctrl.differ){
 				updateChart($scope.$ctrl.chart, (newValue-oldValue==null?0:oldValue));
 			}else {
