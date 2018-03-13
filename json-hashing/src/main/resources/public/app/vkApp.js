@@ -95,8 +95,6 @@ phonecatApp.component('metric', {
 			}
 			if($scope.$ctrl.differ){
 				if(oldValue==null){
-					updateChart($scope.$ctrl.chart, newValue);
-				}else{
 					updateChart($scope.$ctrl.chart, newValue - oldValue);
 				}
 			}else {
@@ -169,9 +167,9 @@ function createChart(target,displayX) {
 	return new Chart(target, {
 		type: 'line',
 		data: {
-			labels: [],
+			labels: [' '],
 			datasets: [{
-				data: [],
+				data: [0],
 				label: "Africa",
 				borderColor: "#3e95cd",
 				fill: false
