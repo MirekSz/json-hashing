@@ -94,7 +94,11 @@ phonecatApp.component('metric', {
 				return
 			}
 			if($scope.$ctrl.differ){
-				updateChart($scope.$ctrl.chart, (newValue-oldValue==null?0:oldValue));
+				if(oldValue==null){
+					updateChart($scope.$ctrl.chart, newValue);
+				}else{
+					updateChart($scope.$ctrl.chart, newValue - oldValue);
+				}
 			}else {
 				updateChart($scope.$ctrl.chart, newValue);
 			}
