@@ -17,7 +17,7 @@
 						class="fas fa-lightbulb"></i> {{state.counters.ok}}
 				</a>
 				</li>
-<li class="nav-item" ng-click="filter('u')" title="In progress">
+				<li class="nav-item" ng-click="filter('u')" title="In progress">
 					<a class="nav-link text-info h3" href="#"><i
 							class="fas fa-hourglass-half"></i>{{state.counters.unfinished}}
 				</a>
@@ -32,7 +32,15 @@
 			<i class="fas fa-blind"></i> Verto Killers
 		</h3>
 	</div>
-	<div class="row ">
+	<div class="row float-right " ng-init="incidents = true">
+		<button class="btn btn-primary" ng-click="incidents = true"><i class="fab fa-audible"></i></button> &nbsp;
+		<button class="btn btn-success" ng-click="incidents = false"><i class="fas fa-binoculars"></i></button>
+	</div>
+	<div class="row animate-show-hide" ng-show="incidents">
+		<metric icon="'fab fa-audible'" title="'Incidents'" data="state.killers.length" differ="true"
+			class="col-sm-12 text-center" />
+			</div>
+	<div class="row animate-show-hide" ng-show="!incidents" >
 		<metric icon="'fas fa-sitemap'" title="'Members'" data="state.members"
 			class="col-sm-3 text-center " />
 		<metric icon="'fas fa-plane'" title="'Backup'" data="state.backups"

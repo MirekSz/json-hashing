@@ -77,16 +77,27 @@ phonecatApp.component('metric', {
 		icon: '=',
 		data: '=',
 		title: '=',
+		differ: '='
 	},
 	controller: function ($scope, $element) {
 		this.$onInit = function () {
+			if($scope.$ctrl.differ){
+				$scope.style = {height: "200px"}
+				$scope.lastData = 0;
+			}
 			setTimeout(function () {
-				$scope.$ctrl.chart = createChart($($($element).find("canvas")[0]));
+				$scope.$ctrl.chart = createChart($($($element).find("canvas")[0]),$scope.$ctrl.differ);
 			}, 0);
 		};
-		$scope.$watch('$ctrl.data', function () {
-			if ($scope.$ctrl.chart) {
-				updateChart($scope.$ctrl.chart, $scope.$ctrl.data);
+		$scope.$watch('$ctrl.data', function (newValue, oldValue) {
+			if (!$scope.$ctrl.chart) {
+				return
+			}
+			debugger
+			if($scope.$ctrl.differ){
+				updateChart($scope.$ctrl.chart, (newValue-oldValue==null?0:oldValue));
+			}else {
+				updateChart($scope.$ctrl.chart, newValue);
 			}
 		}, true);
 	},
@@ -103,7 +114,7 @@ phonecatApp.component('killers', {
 	bindings: {
 		data: '<',
 		title: '=',
-		showType: '='
+		showType: '=',
 	},
 	controller: function ($scope) {
 		this.$onInit = function () {
@@ -128,40 +139,51 @@ phonecatApp.component('killers', {
 	templateUrl: 'app/killers.html'
 });
 
-function createChart(target) {
+function createChart(target,displayX) {
+	var options= {
+		scales: {
+			xAxes: [{
+				display: displayX,
+			}],
+			yAxes: [{
+				display: true,
+				  ticks: {
+		                min: 0,
+		            }
+			}],
+		},
+		legend: {
+			display: false
+		},
+		title: {
+			display: false,
+		}
+	}
+	if(displayX){
+		options.responsive= true;
+		options.maintainAspectRatio= false;
+	}
 	return new Chart(target, {
 		type: 'line',
 		data: {
-			labels: [1],
+			labels: [],
 			datasets: [{
-				data: [1],
+				data: [],
 				label: "Africa",
 				borderColor: "#3e95cd",
 				fill: false
 			}
 			]
 		},
-		options: {
-			scales: {
-				xAxes: [{
-					display: false
-				}],
-				yAxes: [{
-					display: true
-				}],
-			},
-			legend: {
-				display: false
-			},
-			title: {
-				display: false,
-			}
-		}
+		options:options
 	});
 }
 
 function updateChart(chart, val) {
-	chart.data.labels.push(new Date().toISOString().slice(0, 16));
+	var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+	var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, 16);
+
+	chart.data.labels.push(localISOTime);
 	chart.data.datasets.forEach((dataset) => {
 		dataset.data.push(val);
 	});
