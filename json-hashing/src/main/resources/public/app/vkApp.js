@@ -15,7 +15,6 @@ phonecatApp.controller('KillersController', function CartController($scope, $int
 	$scope.state = { members: 0, backups: 0, local: 0, size: 0, membersView: [] };
 	$scope.filter = function (type) {
 		$scope.filterBy = type;
-		filterKillers($scope.state, type);
 	}
 });
 phonecatApp.filter('filterByType', function() {
