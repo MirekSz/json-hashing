@@ -147,9 +147,15 @@ function createChart(target,displayX) {
 			}],
 			yAxes: [{
 				display: true,
-				  ticks: {
-		                min: 0,
-		            }
+				ticks: {
+				    min: 0,
+				    beginAtZero: true,
+				    callback: function(value, index, values) {
+				        if (Math.floor(value) === value) {
+				            return value;
+				        }
+				    }
+				}
 			}],
 		},
 		legend: {
