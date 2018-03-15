@@ -36,9 +36,9 @@
 		<button class="btn btn-primary" ng-click="incidents = true"><i class="fab fa-audible"></i></button> &nbsp;
 		<button class="btn btn-success" ng-click="incidents = false"><i class="fas fa-binoculars"></i></button>
 	</div>
-	<div class="row animate-show-hide" ng-show="incidents">
+	<div class="row animate-show-hide" ng-show="incidents" ng-if="state.killers">
 		<metric icon="'fab fa-audible'" title="'Incidents'" data="state.killers.length" differ="true"
-			class="col-sm-12 text-center" />
+			class="col-sm-12 text-center" initial-values="state.killers"/>
 			</div>
 	<div class="row animate-show-hide" ng-show="!incidents" >
 		<metric icon="'fas fa-sitemap'" title="'Members'" data="state.members"

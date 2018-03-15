@@ -76,7 +76,8 @@ phonecatApp.component('metric', {
 		icon: '=',
 		data: '=',
 		title: '=',
-		differ: '='
+		differ: '=',
+		initialValues:'='
 	},
 	controller: function ($scope, $element) {
 		this.$onInit = function () {
@@ -86,6 +87,12 @@ phonecatApp.component('metric', {
 			}
 			setTimeout(function () {
 				$scope.$ctrl.chart = createChart($($($element).find("canvas")[0]),$scope.$ctrl.differ);
+				var groups = _.groupBy($scope.$ctrl.initialValues, function (el) {
+					  return moment(el.startDate).startOf('minutes').format();
+				});
+				_.forOwn(groups, function(value, key) {
+					updateChart($scope.$ctrl.chart, value.length, key);
+				});
 			}, 0);
 		};
 		$scope.$watch('$ctrl.data', function (newValue, oldValue) {
@@ -185,9 +192,10 @@ function createChart(target,displayX) {
 	});
 }
 
-function updateChart(chart, val) {
+function updateChart(chart, val, date) {
 	var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
-	var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, 16);
+	var event = date!=null?new Date(date):Date.now();
+	var localISOTime = (new Date(event - tzoffset)).toISOString().slice(0, 16);
 
 	chart.data.labels.push(localISOTime);
 	chart.data.datasets.forEach((dataset) => {
