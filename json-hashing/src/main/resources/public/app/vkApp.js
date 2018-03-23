@@ -196,11 +196,18 @@ function updateChart(chart, val, date) {
 	var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
 	var event = date!=null?new Date(date):Date.now();
 	var localISOTime = (new Date(event - tzoffset)).toISOString().slice(0, 16);
+	var needRemove = chart.data.labels.length > 100;
 
 	chart.data.labels.push(localISOTime);
 	chart.data.datasets.forEach((dataset) => {
+		if(needRemove){
+			dataset.data.shift()
+		}
 		dataset.data.push(val);
 	});
+	if(needRemove){
+		chart.data.labels.shift()
+	}
 	chart.update();
 }
 phonecatApp.component('vkApp', {
