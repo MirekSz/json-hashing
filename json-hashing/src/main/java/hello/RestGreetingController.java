@@ -1,6 +1,8 @@
 
 package hello;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.hazelcast.core.DistributedObject;
 
 @RestController
 public class RestGreetingController {
@@ -34,6 +38,11 @@ public class RestGreetingController {
 		map.put("local", Application.CURRENT_OPERATIONS_REGION.getLocalMapStats().getOwnedEntryCount());
 		map.put("size", Application.CURRENT_OPERATIONS_REGION.size());
 		map.put("killers", Application.CURRENT_OPERATIONS_REGION.entrySet().stream().map(i -> i.getValue()).collect(Collectors.toList()));
+		map.put("maps",
+				Application.HAZELCAST_INSTANCE.getDistributedObjects().stream().map(DistributedObject::getName).distinct()
+						.map(name -> Application.HAZELCAST_INSTANCE.getMap(name)).map(el -> new MapDef(el.getName(),
+								el.getLocalMapStats().getBackupEntryCount(), el.getLocalMapStats().getOwnedEntryCount(), el.size()))
+						.collect(toList()));
 		return map;
 	}
 

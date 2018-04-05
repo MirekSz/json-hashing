@@ -1,4 +1,10 @@
 var phonecatApp = angular.module('killers', ['ngAnimate']);
+phonecatApp.run(function($rootScope, $templateCache) {
+	   $rootScope.$on('$viewContentLoaded', function() {
+		   debugger
+	      $templateCache.removeAll();
+	   });
+	});
 function loadData($scope){
 	$.get( "state", function( json ) {
 		json.counters = { ok: 0, warnings: 0, dangers: 0, unfinished: 0 }
@@ -77,16 +83,20 @@ phonecatApp.component('metric', {
 		data: '=',
 		title: '=',
 		differ: '=',
+		height: '=',
 		initialValues:'='
 	},
 	controller: function ($scope, $element) {
 		this.$onInit = function () {
+			if($scope.$ctrl.height){
+				$scope.style = {height: $scope.$ctrl.height}
+			}
 			if($scope.$ctrl.differ){
 				$scope.style = {height: "200px"}
 				$scope.lastData = 0;
 			}
 			setTimeout(function () {
-				$scope.$ctrl.chart = createChart($($($element).find("canvas")[0]),$scope.$ctrl.differ);
+				$scope.$ctrl.chart = createChart($($($element).find("canvas")[0]), $scope.style);
 				var groups = _.groupBy($scope.$ctrl.initialValues, function (el) {
 					  return moment(el.startDate).startOf('minutes').format();
 				});
@@ -108,14 +118,14 @@ phonecatApp.component('metric', {
 			}
 		}, true);
 	},
-	templateUrl: 'app/metric.html'
+	templateUrl: 'app/metric.html?v=2'
 });
 phonecatApp.component('list', {
 	bindings: {
 		data: '=',
 		title: '=',
 	},
-	templateUrl: 'app/list.html'
+	templateUrl: 'app/list.html?v=2'
 });
 phonecatApp.component('killers', {
 	bindings: {
@@ -143,7 +153,7 @@ phonecatApp.component('killers', {
 			$scope.limit = $scope.$ctrl.data.length;
 		}
 	},
-	templateUrl: 'app/killers.html'
+	templateUrl: 'app/killers.html?v=2'
 });
 
 function createChart(target,displayX) {
@@ -211,7 +221,7 @@ function updateChart(chart, val, date) {
 	chart.update();
 }
 phonecatApp.component('vkApp', {
-	templateUrl: 'app/main.html'
+	templateUrl: 'app/main.html?v=2'
 });
 $(document).ready(function(){
 	$("#vkApp").html('<div><vk-app/></div>')
