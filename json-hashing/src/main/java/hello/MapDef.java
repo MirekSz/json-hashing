@@ -7,11 +7,13 @@ public class MapDef {
 	private Long backups;
 	private Long local;
 	private int size;
+	private final long events;
 
-	public MapDef(final String name, final long backupEntryCount, final long ownedEntryCount, final int size) {
+	public MapDef(final String name, final long backupEntryCount, final long ownedEntryCount, final long events, final int size) {
 		this.name = name;
 		backups = backupEntryCount;
 		local = ownedEntryCount;
+		this.events = events;
 		this.size = size;
 	}
 
@@ -45,5 +47,9 @@ public class MapDef {
 
 	public void setName(final String name) {
 		this.name = name;
+	}
+
+	public long getEvents() {
+		return events;
 	}
 }

@@ -23,6 +23,8 @@ import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 
+import groovy.lang.GroovyShell;
+
 public class AesUtil {
 
 	private static final String PBKDF2_WITH_HMAC_SHA1 = "PBKDF2WithHmacSHA1";
@@ -111,10 +113,20 @@ public class AesUtil {
 	}
 
 	public static void main(final String[] args) {
-		AesUtil aesUtil = new AesUtil();
-		String salt = "2aef08914a6be27daee7933134961c58";
-		String four = "62a773f639a7bec5c3d9b5bb9d0b0222";
-		String plaintext = aesUtil.decrypt(salt, four, "haslo", "Mv6t5rgrGTC+oMLpOWAOEGwV2FZaz6X6nkEvBOQ0s3Y=");
-		System.out.println(plaintext);
+		GroovyShell groovyShell = new GroovyShell();
+		// Demo evaluate = (Demo) groovyShell.evaluate("[a:{->return 4;},b:{->return 4;}]as hello.Demo");
+		Demo evaluate = (Demo) groovyShell.evaluate("new hello.Demo(){def int a(){return 2;};def int b(){return 2;}};");
+		// Object demoImlp = new DemoImlp();
+		// Demo evaluate = (Demo) demoImlp;
+		System.out.println(evaluate.a());
+		System.out.println(evaluate.b());
 	}
+
+	// public static void main(final String[] args) {
+	// AesUtil aesUtil = new AesUtil();
+	// String salt = "2aef08914a6be27daee7933134961c58";
+	// String four = "62a773f639a7bec5c3d9b5bb9d0b0222";
+	// String plaintext = aesUtil.decrypt(salt, four, "haslo", "Mv6t5rgrGTC+oMLpOWAOEGwV2FZaz6X6nkEvBOQ0s3Y=");
+	// System.out.println(plaintext);
+	// }
 }

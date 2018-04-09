@@ -40,8 +40,9 @@ public class RestGreetingController {
 		map.put("killers", Application.CURRENT_OPERATIONS_REGION.entrySet().stream().map(i -> i.getValue()).collect(Collectors.toList()));
 		map.put("maps",
 				Application.HAZELCAST_INSTANCE.getDistributedObjects().stream().map(DistributedObject::getName).distinct()
-						.map(name -> Application.HAZELCAST_INSTANCE.getMap(name)).map(el -> new MapDef(el.getName(),
-								el.getLocalMapStats().getBackupEntryCount(), el.getLocalMapStats().getOwnedEntryCount(), el.size()))
+						.map(name -> Application.HAZELCAST_INSTANCE.getMap(name))
+						.map(el -> new MapDef(el.getName(), el.getLocalMapStats().getBackupEntryCount(),
+								el.getLocalMapStats().getOwnedEntryCount(), el.getLocalMapStats().getEventOperationCount(), el.size()))
 						.collect(toList()));
 		return map;
 	}
