@@ -39,7 +39,7 @@ phonecatApp.filter('filterByType', function() {
 });
 phonecatApp.filter('humanize', function () {
 	return function (item) {
-		return item.duration + ' minutes'
+		return moment.duration(item.duration, "minutes").humanize();
 	}
 });
 function isOkTime(item) {
@@ -57,9 +57,9 @@ function calculateDuration(item) {
 	if (item.stopDate) {
 		duration = moment(item.stopDate).diff(moment(item.startDate), 'minutes');
 	} else {
-		duration = moment().diff(moment(item.startDate), 'minutes');
+		duration = moment(item.startDate).diff(moment(), 'minutes');
 	}
-	item.duration = duration;
+	item.duration = Math.abs(duration);
 }
 function countCategories(killers, counters) {
 	killers.forEach(function (item) {
