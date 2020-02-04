@@ -35,7 +35,22 @@ public class Application {
 				.setEvictionPolicy(EvictionPolicy.LRU).setReadBackupData(true).setBackupCount(0).setAsyncBackupCount(1));
 		HAZELCAST_INSTANCE = Hazelcast.newHazelcastInstance(config);
 		CURRENT_OPERATIONS_REGION = HAZELCAST_INSTANCE.getMap("current-operations-region");
-		// CURRENT_OPERATIONS_REGION.clear();
+		System.out.println(Application.HAZELCAST_INSTANCE.getMap("a").keySet());
+		HAZELCAST_INSTANCE.getDurableExecutorService("ab").submit(new Task());
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(10000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				// CURRENT_OPERATIONS_REGION.clear();
+
+			}
+		}).start();
 
 		// Thread.sleep(10000);
 		// Map<String, String> prepareParams = prepareParams();

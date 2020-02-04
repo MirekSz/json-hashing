@@ -8,8 +8,9 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,13 +22,19 @@ public class RestGreetingController {
 	private static final String template = "Hello, %s!";
 	private final AtomicLong counter = new AtomicLong();
 
-	@RequestMapping("/greeting")
+	@PostMapping("/greeting")
 	@ResponseBody
 	public Person greeting(@RequestBody final Person person) {
 		return person;
 	}
 
-	@RequestMapping("/state")
+	@PostMapping("/greeting/add")
+	@ResponseBody
+	public Person greeting2(@RequestBody final Person person) {
+		return person;
+	}
+
+	@GetMapping("/state")
 	@ResponseBody
 	public Map<String, Object> getState() {
 		Map<String, Object> map = new HashMap<>();
