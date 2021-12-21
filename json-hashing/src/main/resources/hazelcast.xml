@@ -21,7 +21,7 @@
 	</properties>
 	<group>
 		<name>admin</name>
-		<password>miro1994</password>
+		<password>abc</password>
 	</group>
 	<management-center enabled="true">http://localhost:8080/mancenter
 	</management-center>
